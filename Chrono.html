@@ -35,11 +35,20 @@
     button:hover {
       background-color: #246b46;
     }
+    #playerName {
+      padding: 0.5rem;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      width: 80%;
+      max-width: 300px;
+    }
   </style>
 </head>
 <body>
   <h1>Départ de la Mission</h1>
-  <p id="message">Appuie sur le bouton pour démarrer la mission.</p>
+  <p id="message">Entre ton nom de géocacheur puis appuie sur le bouton pour démarrer la mission.</p>
+  <input type="text" id="playerName" placeholder="Nom de géocacheur" />
+  <br>
   <button id="startBtn">Démarrer</button>
   <div class="timer" id="timer">10:00</div>
   <div class="coords" id="coords">
@@ -53,6 +62,7 @@
     const coordsDisplay = document.getElementById("coords");
     const startBtn = document.getElementById("startBtn");
     const message = document.getElementById("message");
+    const playerInput = document.getElementById("playerName");
 
     function updateTimer(endTime) {
       const now = Date.now();
@@ -67,13 +77,21 @@
       } else {
         timerDisplay.textContent = "Temps écoulé !";
         localStorage.removeItem("missionEndTime");
+        localStorage.removeItem("missionPlayer");
       }
     }
 
     function startMission() {
+      const name = playerInput.value.trim();
+      if (!name) {
+        alert("Merci d'entrer ton nom de géocacheur avant de commencer.");
+        return;
+      }
+
       const totalSeconds = 10 * 60;
       const endTime = Date.now() + totalSeconds * 1000;
       localStorage.setItem("missionEndTime", endTime);
+      localStorage.setItem("missionPlayer", name);
       displayMission(endTime);
     }
 
@@ -81,13 +99,13 @@
       coordsDisplay.style.display = 'block';
       timerDisplay.style.display = 'block';
       startBtn.style.display = 'none';
-      message.textContent = "Mission en cours...";
+      playerInput.style.display = 'none';
+      message.textContent = "Mission en cours pour " + localStorage.getItem("missionPlayer") + "...";
       updateTimer(endTime);
     }
 
     startBtn.addEventListener("click", startMission);
 
-    // Vérifie si mission déjà en cours
     const savedEndTime = parseInt(localStorage.getItem("missionEndTime"));
     if (savedEndTime && Date.now() < savedEndTime) {
       displayMission(savedEndTime);
