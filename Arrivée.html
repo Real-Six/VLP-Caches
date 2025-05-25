@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Arrivée de la mission</title>
+  <title>Point d'Arrivée</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -41,10 +41,12 @@
         <span class='success'>Bravo ! Tu es arrivé à temps.</span><br>
         Nouvelle position : <strong>48.8370, -1.2172</strong>
       `;
+      localStorage.removeItem("missionEndTime");
     } else {
       resultDiv.innerHTML = `
         <span class='failure'>Temps écoulé !</span><br>
         Retourne au point de départ pour recommencer.`;
+      localStorage.removeItem("missionEndTime");
     }
   </script>
 </body>
