@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arrivée de la mission</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 2rem;
+      background: #eef2f3;
+    }
+    .result {
+      font-size: 1.5rem;
+      margin-top: 2rem;
+      color: #222;
+    }
+    .success {
+      color: green;
+    }
+    .failure {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <h1>Point d'Arrivée</h1>
+  <p>Analyse du temps écoulé en cours...</p>
+  <div class="result" id="result"></div>
+
+  <script>
+    const resultDiv = document.getElementById("result");
+    const endTime = parseInt(localStorage.getItem("missionEndTime"));
+    const now = Date.now();
+
+    if (!endTime) {
+      resultDiv.innerHTML = "<span class='failure'>Erreur : Aucune mission en cours. Retourne au départ.</span>";
+    } else if (now <= endTime) {
+      resultDiv.innerHTML = `
+        <span class='success'>Bravo ! Tu es arrivé à temps.</span><br>
+        Nouvelle position : <strong>48.8370, -1.2172</strong>
+      `;
+    } else {
+      resultDiv.innerHTML = `
+        <span class='failure'>Temps écoulé !</span><br>
+        Retourne au point de départ pour recommencer.`;
+    }
+  </script>
+</body>
+</html>
