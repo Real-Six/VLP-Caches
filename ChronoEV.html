@@ -47,7 +47,7 @@
 <body>
   <h1>Nom de la cache</h1> <!-- ← ICI tu peux changer le nom de la Cache -->
   <p id="message">
-    PLEASE READ::<br>
+    PLEASE READ:<br>
     <br>
     Here's the first NFC tag from this cache!!!<br>
     This is a time trial where you must find a new NFC tag within the allotted time!!!<br>
@@ -59,8 +59,8 @@
   <button id="startBtn">Start</button>
   <div class="timer" id="timer">05:00</div>
   <div class="coords" id="coords">
-    Coordonnées à atteindre :<br>
-    <strong>48.8345, -1.2197</strong> <!-- ← ICI tu peux changer les coordonnées -->
+    Find the NFC tag at the following coordinates :<br>
+    <strong>48.8345, -1.2197</strong> <!-- ← ICI tu peux changer les coordonnées en ENGLISH-->
   </div>
 
   <script>
@@ -82,7 +82,7 @@
       if (diff > 0) {
         setTimeout(() => updateTimer(endTime), 1000);
       } else {
-        timerDisplay.textContent = "Temps écoulé !";
+        timerDisplay.textContent = "Time's up!";
         localStorage.removeItem("missionEndTime");
         localStorage.removeItem("missionPlayer");
       }
@@ -91,7 +91,7 @@
     function startMission() {
       const name = playerInput.value.trim();
       if (!name) {
-        alert("Merci d'entrer ton nom de géocacheur avant de commencer.");
+        alert("Please enter your geocacher name before beginning.");
         return;
       }
 
@@ -107,7 +107,7 @@
       timerDisplay.style.display = 'block';
       startBtn.style.display = 'none';
       playerInput.style.display = 'none';
-      message.textContent = "Mission en cours pour " + localStorage.getItem("missionPlayer") + "...";
+      message.textContent = "Here we go, we have to hurry " + localStorage.getItem("missionPlayer") + "...";
       updateTimer(endTime);
     }
 
