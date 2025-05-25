@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Départ de la mission</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 2rem;
+      background: #f4f4f4;
+    }
+    .timer {
+      font-size: 2rem;
+      margin: 1rem 0;
+      color: #b22222;
+    }
+    .coords {
+      font-size: 1.5rem;
+      margin: 1rem 0;
+      color: #333;
+      display: none;
+    }
+    button {
+      padding: 1rem 2rem;
+      font-size: 1rem;
+      background-color: #2e8b57;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #246b46;
+    }
+  </style>
+</head>
+<body>
+  <h1>Départ de la Mission</h1>
+  <p>Appuie sur le bouton pour démarrer la mission.</p>
+  <button id="startBtn">Démarrer</button>
+  <div class="timer" id="timer">10:00</div>
+  <div class="coords" id="coords">
+    Coordonnées à atteindre :<br>
+    <strong>48.8345, -1.2197</strong>
+  </div>
+
+  <script>
+    let interval;
+    const timerDisplay = document.getElementById("timer");
+    const coordsDisplay = document.getElementById("coords");
+    const startBtn = document.getElementById("startBtn");
+
+    function startMission() {
+      const totalSeconds = 10 * 60;
+      const endTime = Date.now() + totalSeconds * 1000;
+      localStorage.setItem("missionEndTime", endTime);
+      coordsDisplay.style.display = 'block';
+      startBtn.style.display = 'none';
+
+      function updateTimer() {
+        const now = Date.now();
+        const diff = Math.max(0, Math.floor((endTime - now) / 1000));
+
+        const minutes = String(Math.floor(diff / 60)).padStart(2, '0');
+        const seconds = String(diff % 60).padStart(2, '0');
+        timerDisplay.textContent = `${minutes}:${seconds}`;
+
+        if (diff <= 0) {
+          clearInterval(interval);
+          timerDisplay.textContent = "Temps écoulé !";
+        }
+      }
+
+      updateTimer();
+      interval = setInterval(updateTimer, 1000);
+    }
+
+    startBtn.addEventListener("click", startMission);
+  </script>
+</body>
+</html>
