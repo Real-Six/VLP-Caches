@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bravo</title>
+  <title>Nom de la Cache</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -37,7 +37,7 @@
     const durationTotalSeconds = 5 * 60;
 
     if (!endTime || isNaN(endTime)) {
-            resultDiv.innerHTML = "<span class='failure'>Erreur : Aucune mission en cours. Retourne au départ.</span>";
+            resultDiv.innerHTML = "<span class='failure'>Erreur : Vous devez déclencher le 1er Tag<br><br>Error: You must trigger the 1st Tag</span>";
     } else {
       const remainingSeconds = Math.ceil((endTime - now) / 1000);
 
