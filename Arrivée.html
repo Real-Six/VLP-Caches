@@ -37,7 +37,7 @@
     const durationTotalSeconds = 5 * 60;
 
     if (!endTime || isNaN(endTime)) {
-      resultDiv.innerHTML = "<span class='failure'>Erreur :<br>le 1er Tag n'est pas déclenché. Trouve le 1er Tag pour commencer.<br><br>Error: The first tag is not triggered. Find the first tag to start with."</span>;
+            resultDiv.innerHTML = "<span class='failure'>Erreur : Aucune mission en cours. Retourne au départ.</span>";
     } else {
       const remainingSeconds = Math.ceil((endTime - now) / 1000);
 
