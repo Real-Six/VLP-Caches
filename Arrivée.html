@@ -33,7 +33,7 @@
     const endTime = parseInt(localStorage.getItem("missionEndTime"));
     const now = Date.now();
 
-    const durationTotalSeconds = 10 * 60; // Durée totale de la mission en secondes
+    const durationTotalSeconds = 5 * 60; // Durée totale de la mission en secondes
 
     if (!endTime || isNaN(endTime)) {
       resultDiv.innerHTML = "<span class='failure'>Erreur : Aucune mission en cours. Retourne au départ.</span>";
