@@ -47,9 +47,10 @@
           Retourne au point de départ pour recommencer.`;
       } else {
         const elapsedSeconds = durationTotalSeconds - remainingSeconds;
-        const minutes = Math.floor(elapsedSeconds / 60);
-        const seconds = elapsedSeconds % 60;
-        const formatted = `${minutes}m ${seconds}s`;
+        const hours = String(Math.floor(elapsedSeconds / 3600)).padStart(2, '0');
+        const minutes = String(Math.floor((elapsedSeconds % 3600) / 60)).padStart(2, '0');
+        const seconds = String(elapsedSeconds % 60).padStart(2, '0');
+        const formatted = `${hours}:${minutes}:${seconds}`;
 
         resultDiv.innerHTML = `
           Temps écoulé : <strong>${formatted}</strong>`;
