@@ -37,8 +37,7 @@
     const durationTotalSeconds = 5 * 60;
 
     if (!endTime || isNaN(endTime)) {
-      resultDiv.innerHTML = "<span class='failure'>Erreur :</span><br>le 1er Tag n'est pas déclenché. Trouve le 1er Tag pour commencer.
-        "<br><br><span class='failure'>Error: </span>The first tag is not triggered. Find the first tag to start with.";
+      resultDiv.innerHTML = "<span class='failure'>Erreur :<br>le 1er Tag n'est pas déclenché. Trouve le 1er Tag pour commencer.<br><br>Error: The first tag is not triggered. Find the first tag to start with."</span>;
     } else {
       const remainingSeconds = Math.ceil((endTime - now) / 1000);
 
