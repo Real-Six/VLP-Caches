@@ -12,7 +12,7 @@
       background: #eef2f3;
     }
     .result {
-      font-size: 1.2rem;
+      font-size: 1.5rem;
       margin-top: 2rem;
       color: #222;
     }
@@ -31,7 +31,6 @@
   <script>
     const resultDiv = document.getElementById("result");
     const endTime = parseInt(localStorage.getItem("missionEndTime"));
-    const player = localStorage.getItem("missionPlayer") || "joueur inconnu";
     const now = Date.now();
 
     const durationTotalSeconds = 10 * 60; // Durée totale de la mission en secondes
@@ -44,7 +43,7 @@
 
       if (now > endTime) {
         resultDiv.innerHTML = `
-          <span class='failure'>Désolé ${player}, tu es arrivé trop tard !</span><br>
+          <span class='failure'>Temps écoulé !</span><br>
           Retourne au point de départ pour recommencer.`;
       } else {
         const minutes = Math.floor(durationSeconds / 60);
@@ -52,14 +51,7 @@
         const formatted = `${minutes}m ${seconds}s`;
 
         resultDiv.innerHTML = `
-          <span class='success'>Bravo ${player} !</span><br>
-          Tu as mis <strong>${formatted}</strong> pour atteindre cette balise.<br>
-          Classement : <em>en cours de calcul...</em><br>
-        `;
-
-        const scores = JSON.parse(localStorage.getItem("scores") || "[]");
-        scores.push({ name: player, time: durationSeconds });
-        localStorage.setItem("scores", JSON.stringify(scores));
+          Temps écoulé : <strong>${formatted}</strong>`;
       }
 
       localStorage.removeItem("missionEndTime");
