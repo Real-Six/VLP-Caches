@@ -34,12 +34,13 @@
     const player = localStorage.getItem("missionPlayer") || "joueur inconnu";
     const now = Date.now();
 
-    if (!endTime) {
+    if (!endTime || isNaN(endTime)) {
       resultDiv.innerHTML = "<span class='failure'>Erreur : Aucune mission en cours. Retourne au départ.</span>";
     } else {
-      const durationSeconds = Math.floor((endTime - now) / -1000);
+      const durationSeconds = Math.floor((now - (endTime - 10 * 60 * 1000)) / 1000); // 10 minutes = 600s
+      const isInTime = now <= endTime;
 
-      if (durationSeconds <= 0) {
+      if (!isInTime) {
         resultDiv.innerHTML = `
           <span class='failure'>Désolé ${player}, tu es arrivé trop tard !</span><br>
           Retourne au point de départ pour recommencer.`;
@@ -54,13 +55,11 @@
           Classement : <em>en cours de calcul...</em><br>
         `;
 
-        // Exemple de stockage de résultat dans localStorage pour usage futur
         const scores = JSON.parse(localStorage.getItem("scores") || "[]");
         scores.push({ name: player, time: durationSeconds });
         localStorage.setItem("scores", JSON.stringify(scores));
       }
 
-      // Nettoyage des données de session
       localStorage.removeItem("missionEndTime");
       localStorage.removeItem("missionPlayer");
     }
