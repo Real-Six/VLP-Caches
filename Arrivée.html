@@ -12,7 +12,7 @@
       background: #eef2f3;
     }
     .result {
-      font-size: 1.5rem;
+      font-size: 1.2rem;
       margin-top: 2rem;
       color: #222;
     }
@@ -26,27 +26,44 @@
 </head>
 <body>
   <h1>Point d'Arrivée</h1>
-  <p>Analyse du temps écoulé en cours...</p>
   <div class="result" id="result"></div>
 
   <script>
     const resultDiv = document.getElementById("result");
     const endTime = parseInt(localStorage.getItem("missionEndTime"));
+    const player = localStorage.getItem("missionPlayer") || "joueur inconnu";
     const now = Date.now();
 
     if (!endTime) {
       resultDiv.innerHTML = "<span class='failure'>Erreur : Aucune mission en cours. Retourne au départ.</span>";
-    } else if (now <= endTime) {
-      resultDiv.innerHTML = `
-        <span class='success'>Bravo ! Tu es arrivé à temps.</span><br>
-        Nouvelle position : <strong>48.8370, -1.2172</strong>
-      `;
-      localStorage.removeItem("missionEndTime");
     } else {
-      resultDiv.innerHTML = `
-        <span class='failure'>Temps écoulé !</span><br>
-        Retourne au point de départ pour recommencer.`;
+      const durationSeconds = Math.floor((endTime - now) / -1000);
+
+      if (durationSeconds <= 0) {
+        resultDiv.innerHTML = `
+          <span class='failure'>Désolé ${player}, tu es arrivé trop tard !</span><br>
+          <span class='failure'>Sorry ${player}, you arrived too late !</span><br>
+          Retourne au point de départ pour recommencer.<br>
+          Return to the starting point to start again.`;
+      } else {
+        const minutes = Math.floor(durationSeconds / 60);
+        const seconds = durationSeconds % 60;
+        const formatted = `${minutes}m ${seconds}s`;
+
+        resultDiv.innerHTML = `
+          <span class='success'>Bravo ${player} !</span><br>
+          Tu as mis <strong>${formatted}</strong> pour atteindre cet endroit.<br>
+          Classement : <em>en cours de calcul...</em><br>
+         It took you <strong>${formatted}</strong> to reach this place.<br>
+          Classement : <em>en cours de calcul...</em><br>
+        `;
+      }
+      // Simulation de stockage ou d'envoi (ici à remplacer par un appel serveur futur)
+      console.log(`Résultat pour ${player} : ${durationSeconds}s`);
+
+      // Réinitialiser les données après traitement
       localStorage.removeItem("missionEndTime");
+      localStorage.removeItem("missionPlayer");
     }
   </script>
 </body>
