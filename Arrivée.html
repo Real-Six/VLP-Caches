@@ -22,21 +22,14 @@
     .failure {
       color: red;
     }
-    .log {
-      margin-top: 2rem;
-      font-size: 1rem;
-      color: #333;
-    }
   </style>
 </head>
 <body>
   <h1>Point d'Arrivée</h1>
   <div class="result" id="result"></div>
-  <div class="log" id="log"></div>
 
   <script>
     const resultDiv = document.getElementById("result");
-    const logDiv = document.getElementById("log");
     const endTime = parseInt(localStorage.getItem("missionEndTime"));
     const player = localStorage.getItem("missionPlayer") || "joueur inconnu";
     const now = Date.now();
@@ -61,18 +54,14 @@
         resultDiv.innerHTML = `
           Temps écoulé : <strong>${formatted}</strong>`;
 
-        // Ajout au log dans localStorage
-        const logs = JSON.parse(localStorage.getItem("missionLog") || "[]");
-        logs.push({ name: player, time: formatted, timestamp: new Date().toLocaleString() });
-        localStorage.setItem("missionLog", JSON.stringify(logs));
-
-        // Affichage du log à l'écran
-        let html = '<h2>Journal des passages</h2><ul>';
-        logs.forEach(entry => {
-          html += `<li><strong>${entry.name}</strong> : ${entry.time} (${entry.timestamp})</li>`;
+        // ENVOI VERS GOOGLE SHEET
+        fetch("https://script.google.com/macros/s/AKfycbz3mJZxNZMgkMQX15tOxtbjqumq90gZQt-SZPORpgTOVJu9X3q4V5zN9xfWH-xOBA8p/exec", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+          },
+          body: `name=${encodeURIComponent(player)}&time=${encodeURIComponent(formatted)}`
         });
-        html += '</ul>';
-        logDiv.innerHTML = html;
       }
 
       localStorage.removeItem("missionEndTime");
