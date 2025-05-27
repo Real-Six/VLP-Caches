@@ -25,8 +25,7 @@
   </style>
 </head>
 <body>
-  <h1>Bravo ! Vous avez réussi !<br>
-  Congratulations! You did it!</h1>
+  <h1>Nom de la Cache</h1>
   <div class="result" id="result"></div>
 
   <script>
@@ -38,7 +37,8 @@
     const durationTotalSeconds = 5 * 60;
 
     if (!endTime || isNaN(endTime)) {
-      resultDiv.innerHTML = "<span class='failure'>Erreur : le 1er Tag n'est pas déclenché. Trouve le 1er Tag pour commencer.<br>Error: The first tag is not triggered. Find the first tag to start with.</span>";
+      resultDiv.innerHTML = "<span class='failure'>Erreur :</span><br>le 1er Tag n'est pas déclenché. Trouve le 1er Tag pour commencer.
+        "<br><br><span class='failure'>Error: </span>The first tag is not triggered. Find the first tag to start with.";
     } else {
       const remainingSeconds = Math.ceil((endTime - now) / 1000);
 
