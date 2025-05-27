@@ -38,16 +38,16 @@
     if (!endTime || isNaN(endTime)) {
       resultDiv.innerHTML = "<span class='failure'>Erreur : Aucune mission en cours. Retourne au départ.</span>";
     } else {
-      const startTime = endTime - (durationTotalSeconds * 1000);
-      const durationSeconds = Math.floor((now - startTime) / 1000);
+      const remainingSeconds = Math.floor((endTime - now) / 1000);
 
-      if (now > endTime) {
+      if (remainingSeconds <= 0) {
         resultDiv.innerHTML = `
           <span class='failure'>Temps écoulé !</span><br>
           Retourne au point de départ pour recommencer.`;
       } else {
-        const minutes = Math.floor(durationSeconds / 60);
-        const seconds = durationSeconds % 60;
+        const elapsedSeconds = durationTotalSeconds - remainingSeconds;
+        const minutes = Math.floor(elapsedSeconds / 60);
+        const seconds = elapsedSeconds % 60;
         const formatted = `${minutes}m ${seconds}s`;
 
         resultDiv.innerHTML = `
