@@ -42,9 +42,7 @@
       if (durationSeconds <= 0) {
         resultDiv.innerHTML = `
           <span class='failure'>Désolé ${player}, tu es arrivé trop tard !</span><br>
-          <span class='failure'>Sorry ${player}, you arrived too late !</span><br>
-          Retourne au point de départ pour recommencer.<br>
-          Return to the starting point to start again.`;
+          Retourne au point de départ pour recommencer.`;
       } else {
         const minutes = Math.floor(durationSeconds / 60);
         const seconds = durationSeconds % 60;
@@ -52,16 +50,17 @@
 
         resultDiv.innerHTML = `
           <span class='success'>Bravo ${player} !</span><br>
-          Tu as mis <strong>${formatted}</strong> pour atteindre cet endroit.<br>
-          Classement : <em>en cours de calcul...</em><br>
-         It took you <strong>${formatted}</strong> to reach this place.<br>
+          Tu as mis <strong>${formatted}</strong> pour atteindre cette balise.<br>
           Classement : <em>en cours de calcul...</em><br>
         `;
-      }
-      // Simulation de stockage ou d'envoi (ici à remplacer par un appel serveur futur)
-      console.log(`Résultat pour ${player} : ${durationSeconds}s`);
 
-      // Réinitialiser les données après traitement
+        // Exemple de stockage de résultat dans localStorage pour usage futur
+        const scores = JSON.parse(localStorage.getItem("scores") || "[]");
+        scores.push({ name: player, time: durationSeconds });
+        localStorage.setItem("scores", JSON.stringify(scores));
+      }
+
+      // Nettoyage des données de session
       localStorage.removeItem("missionEndTime");
       localStorage.removeItem("missionPlayer");
     }
