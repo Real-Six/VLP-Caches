@@ -137,9 +137,9 @@
     const timeoutMessage = document.getElementById("timeoutMessage");
     timeoutMessage.innerHTML = `
       <img src="French.png" alt="FR" style="height: 30px; vertical-align: middle; margin-right: 8px;">
-      <strong>${playerName}</strong>, le temps est écoulé, vous avez perdu.<br>Vous devez retourner au 1er tag.<br><br>
+      Le temps est écoulé, vous avez perdu.<br>Vous devez retourner au 1er tag.<br><br>
       <img src="Anglais.png" alt="EN" style="height: 30px; vertical-align: middle; margin-right: 8px;">
-      <strong>${playerName}</strong>, time is up, you lost.<br>You must return to the first tag.
+      Time is up, you lost.<br>You must return to the first tag.
     `;
     timeoutMessage.style.display = 'block';
     localStorage.removeItem("missionEndTime");
