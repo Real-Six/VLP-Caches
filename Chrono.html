@@ -166,7 +166,7 @@
   timerDisplay.style.display = 'block';
   inputBox.classList.add("hidden");
   const player = localStorage.getItem("missionPlayer");
-  message.innerHTML = `font-size: 2rem<strong>${player}</strong>`;
+  message.innerHTML = `<strong style="font-size: 2rem;">${player}</strong>`;
   updateTimer(endTime);
 }
 
