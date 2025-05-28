@@ -3,71 +3,93 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nom de la Boucle </title> <!-- ← ICI tu peux changer le nom de la Boucle -->
+  <title>Nom de la Boucle</title>
   <style>
+    :root {
+      --geocaching-green: #4CAF50;
+      --geocaching-brown: #8B5E3C;
+      --geocaching-yellow: #FFEB3B;
+      --geocaching-blue: #2196F3;
+      --text-color: #333;
+    }
     body {
-      font-family: Arial, sans-serif;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
       text-align: center;
       padding: 2rem;
-      background: #a37272;
+      background: linear-gradient(to bottom right, var(--geocaching-green), var(--geocaching-blue));
+      color: var(--text-color);
+    }
+    h1 {
+      color: white;
+      margin-bottom: 1rem;
     }
     .timer {
       font-size: 2rem;
       margin: 1rem 0;
-      color: #b22222;
+      color: var(--geocaching-yellow);
       display: none;
     }
     .coords {
-      font-size: 2rem;
+      font-size: 1.5rem;
       margin: 1rem 0;
-      color: #333;
+      color: white;
+      background-color: rgba(0,0,0,0.2);
+      padding: 1rem;
+      border-radius: 8px;
       display: none;
     }
     button {
       padding: 1rem 2rem;
       font-size: 1rem;
-      background-color: #2e8b57;
+      background-color: var(--geocaching-brown);
       color: white;
       border: none;
       border-radius: 8px;
       cursor: pointer;
     }
     button:hover {
-      background-color: #246b46;
+      background-color: #6d442a;
     }
     #playerName {
-      align="center"
       padding: 0.5rem;
       font-size: 1rem;
       margin-bottom: 1rem;
       width: 80%;
       max-width: 300px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .lang-label {
+      font-weight: bold;
+      margin-top: 1rem;
+      display: block;
+      color: white;
     }
   </style>
 </head>
 <body>
-  <h1>Nom de la cache</h1> <!-- ← ICI tu peux changer le nom de la Cache -->
+  <h1>Nom de la Cache</h1>
   <p id="message">
-   <div align="center"><img src="French.png" alt="logo" style="height: 40px; vertical-align: middle; margin-right: 10px;"></div><br>
-    A LIRE ATTENTIVEMENT:<br>
+    <span class="lang-label"><img src="French.png" alt="FR" style="height: 30px; vertical-align: middle; margin-right: 8px;"> Version Française :</span>
+    A LIRE ATTENTIVEMENT :<br>
     Voici le 1er Tag NFC de cette cache !!!<br>
     Ceci est un contre la montre où vous devez trouver un nouveau tag NFC dans le temps imparti !!!<br>
-    Un indice vous sera fourni après avoir renseigner ton Nom de Géocacheur et appuyer sur Start<br>
-    <br>
-    <div align="cnter"><img src="Anglais.png" alt="logo" style="height: 40px; vertical-align: middle; margin-right: 10px;"></div><br>
-    PLEASE READ: <br>
+    Un indice vous sera fourni après avoir renseigné ton Nom de Géocacheur et appuyé sur Start.<br><br>
+
+    <span class="lang-label"><img src="Anglais.png" alt="EN" style="height: 30px; vertical-align: middle; margin-right: 8px;"> English Version :</span>
+    PLEASE READ:<br>
     Here's the first NFC tag from this cache!!!<br>
     This is a time trial where you must find a new NFC tag within the allotted time!!!<br>
     A clue will be provided after entering your Geocacher Name and pressing Start.<br>
-    <br>
-    </p>
+  </p>
+
   <input type="text" id="playerName" placeholder="Geocacher Name" />
   <br>
   <button id="startBtn">Start</button>
   <div class="timer" id="timer">05:00</div>
   <div class="coords" id="coords">
     Trouvez le tag NFC aux coordonnées suivantes :<br>
-    <strong>48.8345, -1.2197</strong> <!-- ← ICI tu peux changer les coordonnées -->
+    <strong>48.8345, -1.2197</strong>
   </div>
 
   <script>
@@ -81,7 +103,6 @@
     function updateTimer(endTime) {
       const now = Date.now();
       const diff = Math.max(0, Math.floor((endTime - now) / 1000));
-
       const minutes = String(Math.floor(diff / 60)).padStart(2, '0');
       const seconds = String(diff % 60).padStart(2, '0');
       timerDisplay.textContent = `${minutes}:${seconds}`;
@@ -98,11 +119,11 @@
     function startMission() {
       const name = playerInput.value.trim();
       if (!name) {
-        alert("Merci d'entrer ton nom de géocacheur avant de commencer.<br>Thanx to enter your geocacher name before begining");
+        alert("Merci d'entrer ton nom de géocacheur avant de commencer.\nThank you for entering your geocacher name before starting.");
         return;
       }
 
-      const totalSeconds = 5 * 60; // ← ICI tu peux modifier la durée du minuteur (en secondes)
+      const totalSeconds = 5 * 60;
       const endTime = Date.now() + totalSeconds * 1000;
       localStorage.setItem("missionEndTime", endTime);
       localStorage.setItem("missionPlayer", name);
