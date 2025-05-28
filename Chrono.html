@@ -34,10 +34,10 @@
       margin: 1rem auto;
       color: white;
       background-color: rgba(0,0,0,0.15);
-      padding: 0.8rem;
+      padding: 1rem;
       border-radius: 6px;
       display: none;
-      max-width: 350px;
+      display: inline-block;
     }
     .input-box {
       background-color: rgba(0, 0, 0, 0.2);
@@ -103,8 +103,6 @@
   <div class="timer" id="timer">05:00</div>
   <div class="coords" id="coords">
     Trouvez le tag NFC aux coordonnées suivantes :<br>
-    Find the NFC tag at the following coordinates:<br>
-    <br>
     <strong>48.8345, -1.2197</strong>
   </div>
 
@@ -148,7 +146,7 @@
     }
 
     function displayMission(endTime) {
-      coordsDisplay.style.display = 'block';
+      coordsDisplay.style.display = 'inline-block';
       timerDisplay.style.display = 'block';
       inputBox.classList.add("hidden");
       message.textContent = "Let's go " + localStorage.getItem("missionPlayer") + "...";
