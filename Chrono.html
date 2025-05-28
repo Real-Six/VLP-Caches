@@ -30,20 +30,24 @@
       display: none;
     }
     .coords {
-      font-size: 1.5rem;
-      margin: 1rem 0;
+      font-size: 1.2rem;
+      margin: 1rem auto;
       color: white;
-      background-color: rgba(0,0,0,0.2);
-      padding: 1rem;
-      border-radius: 8px;
+      background-color: rgba(0,0,0,0.15);
+      padding: 0.8rem;
+      border-radius: 6px;
       display: none;
+      max-width: 350px;
     }
     .input-box {
       background-color: rgba(0, 0, 0, 0.2);
-      padding: 1.5rem;
+      padding: 1.2rem;
       border-radius: 10px;
       display: inline-block;
       margin-top: 1rem;
+    }
+    .input-box.hidden {
+      display: none;
     }
     button {
       padding: 1rem 2rem;
@@ -90,7 +94,7 @@
     A clue will be provided after entering your Geocacher Name and pressing Start.<br>
   </p>
 
-  <div class="input-box">
+  <div class="input-box" id="inputBox">
     <input type="text" id="playerName" placeholder="Geocacher Name" />
     <br>
     <button id="startBtn">Start</button>
@@ -109,6 +113,7 @@
     const startBtn = document.getElementById("startBtn");
     const message = document.getElementById("message");
     const playerInput = document.getElementById("playerName");
+    const inputBox = document.getElementById("inputBox");
 
     function updateTimer(endTime) {
       const now = Date.now();
@@ -143,8 +148,7 @@
     function displayMission(endTime) {
       coordsDisplay.style.display = 'block';
       timerDisplay.style.display = 'block';
-      startBtn.style.display = 'none';
-      playerInput.style.display = 'none';
+      inputBox.classList.add("hidden");
       message.textContent = "Let's go " + localStorage.getItem("missionPlayer") + "...";
       updateTimer(endTime);
     }
