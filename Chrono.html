@@ -130,7 +130,11 @@
       if (diff > 0) {
         setTimeout(() => updateTimer(endTime), 1000);
       } else {
-        timerDisplay.textContent = "Temps écoulé !";
+        timerDisplay.textContent = "
+          <img src="French.png" alt="FR" style="height: 30px; vertical-align: middle; margin-right: 8px;">
+          ${player}, Le temps est écoulé, vous avez perdu.<br>Vous devez retourner au 1er tag.<br><br>
+          <img src="Anglais.png" alt="EN" style="height: 30px; vertical-align: middle; margin-right: 8px;">
+          ${player}, Time is up, you lost.<br>You must return to the first tag.";
         localStorage.removeItem("missionEndTime");
         localStorage.removeItem("missionPlayer");
       }
