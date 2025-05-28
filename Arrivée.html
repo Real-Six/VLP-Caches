@@ -52,15 +52,17 @@
     const durationTotalSeconds = 5 * 60;
 
     if (!endTime || isNaN(endTime)) {
-      resultDiv.innerHTML = "<span class='failure'>Erreur : Vous devez d\u00e9clencher le 1er Tag<br>
+      resultDiv.innerHTML = "<span class='failure'><img src="French.png" alt="FR" style="height: 30px; vertical-align: middle; margin-right: 8px;">Erreur : Vous devez d\u00e9clencher le 1er Tag<br>
       <br><img src="Anglais.png" alt="EN" style="height: 30px; vertical-align: middle; margin-right: 8px;">Error: You must trigger the 1st Tag</span>";
     } else {
       const remainingSeconds = Math.ceil((endTime - now) / 1000);
 
       if (remainingSeconds <= 0) {
         resultDiv.innerHTML = `
-          <span class='failure'>Temps \u00e9coul\u00e9 !</span><br>
+          <span class='failure'><img src="French.png" alt="FR" style="height: 30px; vertical-align: middle; margin-right: 8px;"></span> Temps \u00e9coul\u00e9 !<br>
           Retourne au point de d\u00e9part pour recommencer.`;
+          <span class='failure'><img src="Anglais.png" alt="EN" style="height: 30px; vertical-align: middle; margin-right: 8px;"></span> Time's Up !<br>
+          Return to the starting point to start again.`;</span>
       } else {
         const elapsedSeconds = durationTotalSeconds - remainingSeconds;
         const hours = String(Math.floor(elapsedSeconds / 3600)).padStart(2, '0');
@@ -69,8 +71,11 @@
         const formatted = `${hours}:${minutes}:${seconds}`;
 
         resultDiv.innerHTML = `
-          <span class='success'>Temps \u00e9coul\u00e9 : <strong>${formatted}</strong></span>`;
-
+          <span class='success'><img src="French.png" alt="FR" style="height: 30px; vertical-align: middle; margin-right: 8px;">Bravo !<br>
+            Votre Temps est de : <strong>${formatted}</strong></span>`;
+        <span class='success'><img src="Anglais.png" alt="EN" style="height: 30px; vertical-align: middle; margin-right: 8px;">Congratulations !<br>
+            Your temps is : <strong>${formatted}</strong></span>`;
+        
         // ENVOI VERS GOOGLE SHEET
         fetch("https://script.google.com/macros/s/AKfycbyr6IyOYoJDcZuAxClOCpx__-j_5IzFiMVUoXim5ggPW-VUuS4Kqc6tFCc5gYJqqBIj/exec", {
           method: "POST",
