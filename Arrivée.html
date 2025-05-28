@@ -52,7 +52,8 @@
     const durationTotalSeconds = 5 * 60;
 
     if (!endTime || isNaN(endTime)) {
-      resultDiv.innerHTML = "<span class='failure'>Erreur : Vous devez d\u00e9clencher le 1er Tag<br><br>Error: You must trigger the 1st Tag</span>";
+      resultDiv.innerHTML = "<span class='failure'>Erreur : Vous devez d\u00e9clencher le 1er Tag<br>
+      <br><img src="Anglais.png" alt="EN" style="height: 30px; vertical-align: middle; margin-right: 8px;">Error: You must trigger the 1st Tag</span>";
     } else {
       const remainingSeconds = Math.ceil((endTime - now) / 1000);
 
