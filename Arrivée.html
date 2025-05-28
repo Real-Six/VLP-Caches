@@ -5,22 +5,37 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Nom de la Cache</title>
   <style>
+    :root {
+      --geocaching-green: #4CAF50;
+      --geocaching-brown: #8B5E3C;
+      --geocaching-yellow: #FFEB3B;
+      --geocaching-blue: #2196F3;
+      --text-color: #333;
+    }
     body {
-      font-family: Arial, sans-serif;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
       text-align: center;
       padding: 2rem;
-      background: #ede1e1;
+      background: linear-gradient(to bottom right, var(--geocaching-green), var(--geocaching-blue));
+      color: white;
+    }
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
     }
     .result {
       font-size: 1.5rem;
       margin-top: 2rem;
-      color: #222;
+      background-color: rgba(0, 0, 0, 0.2);
+      padding: 1.5rem;
+      border-radius: 10px;
+      color: white;
     }
     .success {
-      color: green;
+      color: var(--geocaching-yellow);
     }
     .failure {
-      color: red;
+      color: #ff6b6b;
     }
   </style>
 </head>
@@ -37,14 +52,14 @@
     const durationTotalSeconds = 5 * 60;
 
     if (!endTime || isNaN(endTime)) {
-            resultDiv.innerHTML = "<span class='failure'>Erreur : Vous devez déclencher le 1er Tag<br><br>Error: You must trigger the 1st Tag</span>";
+      resultDiv.innerHTML = "<span class='failure'>Erreur : Vous devez d\u00e9clencher le 1er Tag<br><br>Error: You must trigger the 1st Tag</span>";
     } else {
       const remainingSeconds = Math.ceil((endTime - now) / 1000);
 
       if (remainingSeconds <= 0) {
         resultDiv.innerHTML = `
-          <span class='failure'>Temps écoulé !</span><br>
-          Retourne au point de départ pour recommencer.`;
+          <span class='failure'>Temps \u00e9coul\u00e9 !</span><br>
+          Retourne au point de d\u00e9part pour recommencer.`;
       } else {
         const elapsedSeconds = durationTotalSeconds - remainingSeconds;
         const hours = String(Math.floor(elapsedSeconds / 3600)).padStart(2, '0');
@@ -53,7 +68,7 @@
         const formatted = `${hours}:${minutes}:${seconds}`;
 
         resultDiv.innerHTML = `
-          Temps écoulé : <strong>${formatted}</strong>`;
+          <span class='success'>Temps \u00e9coul\u00e9 : <strong>${formatted}</strong></span>`;
 
         // ENVOI VERS GOOGLE SHEET
         fetch("https://script.google.com/macros/s/AKfycbyr6IyOYoJDcZuAxClOCpx__-j_5IzFiMVUoXim5ggPW-VUuS4Kqc6tFCc5gYJqqBIj/exec", {
