@@ -38,6 +38,13 @@
       border-radius: 8px;
       display: none;
     }
+    .input-box {
+      background-color: rgba(0, 0, 0, 0.2);
+      padding: 1.5rem;
+      border-radius: 10px;
+      display: inline-block;
+      margin-top: 1rem;
+    }
     button {
       padding: 1rem 2rem;
       font-size: 1rem;
@@ -83,9 +90,12 @@
     A clue will be provided after entering your Geocacher Name and pressing Start.<br>
   </p>
 
-  <input type="text" id="playerName" placeholder="Geocacher Name" />
-  <br>
-  <button id="startBtn">Start</button>
+  <div class="input-box">
+    <input type="text" id="playerName" placeholder="Geocacher Name" />
+    <br>
+    <button id="startBtn">Start</button>
+  </div>
+
   <div class="timer" id="timer">05:00</div>
   <div class="coords" id="coords">
     Trouvez le tag NFC aux coordonnées suivantes :<br>
