@@ -66,9 +66,9 @@
         resultDiv.innerHTML = `
           <span class='failure'>
             <img src="French.png" alt="FR" style="height: 30px; vertical-align: middle; margin-right: 8px;">
-            Temps écoulé !<br>Retourne au point de départ pour recommencer.<br><br>
+            ${player}, Le temps est écoulé, vous avez perdu.<br>Vous devez retourner au 1er tag.<br><br>
             <img src="Anglais.png" alt="EN" style="height: 30px; vertical-align: middle; margin-right: 8px;">
-            Time's up!<br>Return to the starting point to start again.
+            ${player}, Time is up, you lost.<br>You must return to the first tag.
           </span>`;
       } else {
         const elapsedSeconds = durationTotalSeconds - remainingSeconds;
@@ -80,9 +80,9 @@
         resultDiv.innerHTML = `
           <span class='success'>
             <img src="French.png" alt="FR" style="height: 30px; vertical-align: middle; margin-right: 8px;">
-            Bravo ${player}!<br>Votre temps est de : <strong>${formatted}</strong><br><br>
+            Bravo ${player} !<br>Votre temps est de : <strong>${formatted}</strong><br><br>
             <img src="Anglais.png" alt="EN" style="height: 30px; vertical-align: middle; margin-right: 8px;">
-            Congratulations ${player} !<br>Your time is : <strong>${formatted}</strong>
+            Congratulations ${player}!<br>Your time is : <strong>${formatted}</strong>
           </span>`;
 
         // ENVOI VERS GOOGLE SHEET
