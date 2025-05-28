@@ -88,7 +88,7 @@
     A LIRE ATTENTIVEMENT :<br>
     Voici le 1er Tag NFC de cette cache !!!<br>
     Ceci est un contre la montre où vous devez trouver un nouveau tag NFC dans le temps imparti !!!<br>
-    Un indice vous sera fourni après avoir renseigné ton Nom de Géocacheur et appuyé sur Start.<br><br>
+    Un indice vous sera fourni après avoir renseigné votre Nom de Géocacheur et appuyé sur Start.<br><br>
 
     <span class="lang-label"><img src="Anglais.png" alt="EN" style="height: 30px; vertical-align: middle; margin-right: 8px;"> English Version :</span>
     PLEASE READ:<br>
@@ -106,10 +106,10 @@
   <div class="timer" id="timer">05:00</div>
   <div id="timeoutMessage" style="display: none; color: white; font-size: 1.2rem; margin-top: 1rem;"></div>
   <div class="coords hidden" id="coords">
-    <img src="French.png" alt="FR" style="height: 30px; vertical-align: middle; margin-right: 8px;">Trouvez le tag NFC aux coordonnées suivantes :<br>
-    <img src="Anglais.png" alt="EN" style="height: 30px; vertical-align: middle; margin-right: 8px;">Find the NFC tag at the following coordinates:<br>
+    <img src="French.png" alt="FR" style="height: 30px; vertical-align: middle; margin-right: 8px;">Avant la fin du temps, Trouvez le tag NFC aux coordonnées suivantes :<br>
+    <img src="Anglais.png" alt="EN" style="height: 30px; vertical-align: middle; margin-right: 8px;">Before the end of time, Find the NFC tag at the following coordinates:<br>
     <br>
-    <strong>48.8345, -1.2197</strong>
+    <strong>48.8345, -1.2197</strong> // ICI pour les coordonnées et indices
   </div>
 
   <script>
@@ -135,6 +135,7 @@
     coordsDisplay.style.display = 'none';
     const playerName = localStorage.getItem("missionPlayer") || "joueur";
     const timeoutMessage = document.getElementById("timeoutMessage");
+    
     timeoutMessage.innerHTML = `
       <img src="French.png" alt="FR" style="height: 30px; vertical-align: middle; margin-right: 8px;">
       Le temps est écoulé, vous avez perdu.<br>Vous devez retourner au 1er tag.<br><br>
@@ -169,7 +170,6 @@
   message.innerHTML = `<strong style="font-size: 2rem;">${player}</strong>`;
   updateTimer(endTime);
 }
-
 
     startBtn.addEventListener("click", startMission);
 
