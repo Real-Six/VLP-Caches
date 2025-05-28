@@ -165,7 +165,7 @@
       coordsDisplay.classList.remove("hidden");
       timerDisplay.style.display = 'block';
       inputBox.classList.add("hidden");
-      message.textContent = "Let's go " + localStorage.getItem("missionPlayer") + "...";
+      message.textContent = <strong>localStorage.getItem("missionPlayer")</strong>;
       updateTimer(endTime);
     }
 
