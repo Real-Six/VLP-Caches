@@ -104,6 +104,7 @@
   </div>
 
   <div class="timer" id="timer">05:00</div>
+  <div id="timeoutMessage" style="display: none; color: white; font-size: 1.2rem; margin-top: 1rem;"></div>
   <div class="coords hidden" id="coords">
     <img src="French.png" alt="FR" style="height: 30px; vertical-align: middle; margin-right: 8px;">Trouvez le tag NFC aux coordonnées suivantes :<br>
     <img src="Anglais.png" alt="EN" style="height: 30px; vertical-align: middle; margin-right: 8px;">Find the NFC tag at the following coordinates:<br>
@@ -121,24 +122,30 @@
     const inputBox = document.getElementById("inputBox");
 
     function updateTimer(endTime) {
-      const now = Date.now();
-      const diff = Math.max(0, Math.floor((endTime - now) / 1000));
-      const minutes = String(Math.floor(diff / 60)).padStart(2, '0');
-      const seconds = String(diff % 60).padStart(2, '0');
-      timerDisplay.textContent = `${minutes}:${seconds}`;
+  const now = Date.now();
+  const diff = Math.max(0, Math.floor((endTime - now) / 1000));
+  const minutes = String(Math.floor(diff / 60)).padStart(2, '0');
+  const seconds = String(diff % 60).padStart(2, '0');
+  timerDisplay.textContent = `${minutes}:${seconds}`;
 
-      if (diff > 0) {
-        setTimeout(() => updateTimer(endTime), 1000);
-      } else {
-        timerDisplay.innerHTML = `
-  <img src="French.png" alt="FR" style="height: 30px; vertical-align: middle; margin-right: 8px;">
-  ${localStorage.getItem("missionPlayer")}, Le temps est écoulé, vous avez perdu.<br>Vous devez retourner au 1er tag.<br><br>
-  <img src="Anglais.png" alt="EN" style="height: 30px; vertical-align: middle; margin-right: 8px;">
-  ${localStorage.getItem("missionPlayer")}, Time is up, you lost.<br>You must return to the first tag.`;
-        localStorage.removeItem("missionEndTime");
-        localStorage.removeItem("missionPlayer");
-      }
-    }
+  if (diff > 0) {
+    setTimeout(() => updateTimer(endTime), 1000);
+  } else {
+    timerDisplay.style.display = 'none';
+    coordsDisplay.style.display = 'none';
+    const playerName = localStorage.getItem("missionPlayer") || "joueur";
+    const timeoutMessage = document.getElementById("timeoutMessage");
+    timeoutMessage.innerHTML = `
+      <img src="French.png" alt="FR" style="height: 30px; vertical-align: middle; margin-right: 8px;">
+      <strong>${playerName}</strong>, le temps est écoulé, vous avez perdu.<br>Vous devez retourner au 1er tag.<br><br>
+      <img src="Anglais.png" alt="EN" style="height: 30px; vertical-align: middle; margin-right: 8px;">
+      <strong>${playerName}</strong>, time is up, you lost.<br>You must return to the first tag.
+    `;
+    timeoutMessage.style.display = 'block';
+    localStorage.removeItem("missionEndTime");
+    localStorage.removeItem("missionPlayer");
+  }
+}
 
     function startMission() {
       const name = playerInput.value.trim();
