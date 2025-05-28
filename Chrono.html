@@ -162,12 +162,14 @@
     }
 
     function displayMission(endTime) {
-      coordsDisplay.classList.remove("hidden");
-      timerDisplay.style.display = 'block';
-      inputBox.classList.add("hidden");
-      message.innerHTML = `<strong>${localStorage.getItem("missionPlayer")}</strong>;
-      updateTimer(endTime);
-    }
+  coordsDisplay.classList.remove("hidden");
+  timerDisplay.style.display = 'block';
+  inputBox.classList.add("hidden");
+  const player = localStorage.getItem("missionPlayer");
+  message.innerHTML = `<strong>${player}</strong>`;
+  updateTimer(endTime);
+}
+
 
     startBtn.addEventListener("click", startMission);
 
