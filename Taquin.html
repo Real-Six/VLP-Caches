@@ -33,7 +33,7 @@
     .tile {
       width: 100%;
       height: 100%;
-      background-size: 100% 100%;
+      background-size: 500% 500%;
       cursor: pointer;
     }
     .empty {
@@ -67,10 +67,10 @@
         tile.classList.add("tile");
         if (i === emptyIndex) tile.classList.add("empty");
         else {
-          const x = (i % size) * -100 / (size - 1);
-          const y = Math.floor(i / size) * -100 / (size - 1);
+          const col = i % size;
+          const row = Math.floor(i / size);
           tile.style.backgroundImage = "url('Dentelle.jpg')";
-          tile.style.backgroundPosition = `${x}% ${y}%`;
+          tile.style.backgroundPosition = `${col * 100}% ${row * 100}%`;
           tile.dataset.index = i;
         }
         taquin.appendChild(tile);
@@ -92,10 +92,10 @@
         tile.classList.add("tile");
         if (indices[i] === emptyIndex) tile.classList.add("empty");
         else {
-          const x = (indices[i] % size) * -100 / (size - 1);
-          const y = Math.floor(indices[i] / size) * -100 / (size - 1);
+          const col = indices[i] % size;
+          const row = Math.floor(indices[i] / size);
           tile.style.backgroundImage = "url('Dentelle.jpg')";
-          tile.style.backgroundPosition = `${x}% ${y}%`;
+          tile.style.backgroundPosition = `${col * 100}% ${row * 100}%`;
           tile.dataset.index = indices[i];
         }
         tile.addEventListener("click", () => moveTile(i));
