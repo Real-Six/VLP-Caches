@@ -23,9 +23,9 @@
     }
     #taquin {
       display: grid;
-      grid-template-columns: repeat(5, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       width: 90vw;
-      max-width: 400px;
+      max-width: 300px;
       aspect-ratio: 1 / 1;
       gap: 2px;
       margin-top: 1rem;
@@ -33,7 +33,7 @@
     .tile {
       width: 100%;
       height: 100%;
-      background-size: 500% 500%;
+      background-size: 300% 300%;
       cursor: pointer;
     }
     .empty {
@@ -55,11 +55,11 @@
   <div id="coords">N 48° 50.123 E 001° 30.456</div>
 
   <script>
-    const size = 5;
+    const size = 3;
     const taquin = document.getElementById("taquin");
     const coords = document.getElementById("coords");
     let tiles = [];
-    let emptyIndex = 24;
+    let emptyIndex = size * size - 1;
 
     function createTiles() {
       for (let i = 0; i < size * size; i++) {
