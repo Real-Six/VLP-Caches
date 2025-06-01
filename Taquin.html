@@ -64,60 +64,57 @@
     let positions = [];
 
     function createTiles() {
-      for (let i = 0; i < totalTiles; i++) {
+      tiles = [];
+      for (let i = 0; i < totalTiles - 1; i++) {
         const tile = document.createElement("div");
         tile.className = "tile";
-        if (i === totalTiles - 1) {
-          tile.classList.add("empty");
-          tile.dataset.index = -1;
-        } else {
-          const col = i % size;
-          const row = Math.floor(i / size);
-          tile.style.backgroundPosition = `${col * 100}% ${row * 100}%`;
-          tile.dataset.index = i;
-        }
-        tile.addEventListener("click", () => tryMove(i));
+        const col = i % size;
+        const row = Math.floor(i / size);
+        tile.style.backgroundPosition = `${col * 100}% ${row * 100}%`;
+        tile.dataset.index = i;
         tiles.push(tile);
-        positions.push(i);
       }
-      positions[totalTiles - 1] = -1;
-      render();
     }
 
     function render() {
       taquin.innerHTML = "";
-      positions.forEach(pos => {
-        taquin.appendChild(pos === -1 ? createEmptyTile() : tiles[pos]);
+      positions.forEach((pos, i) => {
+        if (pos === -1) {
+          const empty = document.createElement("div");
+          empty.className = "tile empty";
+          taquin.appendChild(empty);
+        } else {
+          const tile = tiles[pos];
+          tile.onclick = () => tryMove(i);
+          taquin.appendChild(tile);
+        }
       });
     }
 
-    function createEmptyTile() {
-      const empty = document.createElement("div");
-      empty.className = "tile empty";
-      return empty;
-    }
+    function tryMove(clickedIndex) {
+      const emptyIndex = positions.indexOf(-1);
+      const clickedRow = Math.floor(clickedIndex / size);
+      const clickedCol = clickedIndex % size;
+      const emptyRow = Math.floor(emptyIndex / size);
+      const emptyCol = emptyIndex % size;
 
-    function tryMove(index) {
-      const emptyPos = positions.indexOf(-1);
-      const row = Math.floor(index / size);
-      const col = index % size;
-      const emptyRow = Math.floor(emptyPos / size);
-      const emptyCol = emptyPos % size;
-
-      const isAdjacent = (Math.abs(row - emptyRow) + Math.abs(col - emptyCol)) === 1;
+      const isAdjacent = (Math.abs(clickedRow - emptyRow) + Math.abs(clickedCol - emptyCol)) === 1;
       if (!isAdjacent) return;
 
-      [positions[index], positions[emptyPos]] = [positions[emptyPos], positions[index]];
+      [positions[clickedIndex], positions[emptyIndex]] = [positions[emptyIndex], positions[clickedIndex]];
       render();
       checkSolved();
     }
 
     function shuffle() {
-      for (let i = positions.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [positions[i], positions[j]] = [positions[j], positions[i]];
-      }
-      if (!isSolvable(positions)) shuffle();
+      do {
+        positions = [...Array(totalTiles - 1).keys()];
+        positions.push(-1);
+        for (let i = positions.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [positions[i], positions[j]] = [positions[j], positions[i]];
+        }
+      } while (!isSolvable(positions));
     }
 
     function isSolvable(p) {
