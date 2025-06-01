@@ -128,11 +128,13 @@
     }
 
     function checkSolved() {
-      for (let i = 0; i < totalTiles - 1; i++) {
-        if (positions[i] !== i) return;
-      }
-      coords.style.display = "block";
-    }
+  for (let i = 0; i < totalTiles - 1; i++) {
+    if (positions[i] !== i) return;
+  }
+  if (positions[totalTiles - 1] !== -1) return;
+  coords.style.display = "block";
+}
+
 
     createTiles();
     shuffle();
