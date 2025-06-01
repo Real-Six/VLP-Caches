@@ -1,1 +1,131 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Taquin - Dentelle</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    h1 {
+      color: #2d2d2d;
+    }
+    #taquin {
+      display: grid;
+      grid-template-columns: repeat(5, 80px);
+      grid-template-rows: repeat(5, 80px);
+      gap: 2px;
+    }
+    .tile {
+      width: 80px;
+      height: 80px;
+      background-size: 400px 400px;
+      cursor: pointer;
+    }
+    .empty {
+      background: white;
+      cursor: default;
+    }
+    #coords {
+      margin-top: 20px;
+      font-size: 1.2em;
+      color: #2d2d2d;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>Jeu du Taquin</h1>
+  <div id="taquin"></div>
+  <div id="coords">N 48° 50.123 E 001° 30.456</div>
+
+  <script>
+    const size = 5;
+    const taquin = document.getElementById("taquin");
+    const coords = document.getElementById("coords");
+    let tiles = [];
+    let emptyIndex = 24;
+
+    function createTiles() {
+      for (let i = 0; i < size * size; i++) {
+        const tile = document.createElement("div");
+        tile.classList.add("tile");
+        if (i === emptyIndex) tile.classList.add("empty");
+        else {
+          const x = (i % size) * -80;
+          const y = Math.floor(i / size) * -80;
+          tile.style.backgroundImage = "url('Dentelle.jpg')";
+          tile.style.backgroundPosition = `${x}px ${y}px`;
+          tile.dataset.index = i;
+        }
+        taquin.appendChild(tile);
+        tiles.push(tile);
+      }
+    }
+
+    function shuffleTiles() {
+      const indices = [...Array(size * size - 1).keys()];
+      for (let i = indices.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [indices[i], indices[j]] = [indices[j], indices[i]];
+      }
+      indices.push(emptyIndex);
+      taquin.innerHTML = "";
+      tiles = [];
+      for (let i = 0; i < indices.length; i++) {
+        const tile = document.createElement("div");
+        tile.classList.add("tile");
+        if (indices[i] === emptyIndex) tile.classList.add("empty");
+        else {
+          const x = (indices[i] % size) * -80;
+          const y = Math.floor(indices[i] / size) * -80;
+          tile.style.backgroundImage = "url('Dentelle.jpg')";
+          tile.style.backgroundPosition = `${x}px ${y}px`;
+          tile.dataset.index = indices[i];
+        }
+        tile.addEventListener("click", () => moveTile(i));
+        taquin.appendChild(tile);
+        tiles.push(tile);
+      }
+    }
+
+    function moveTile(index) {
+      const emptyPos = tiles.findIndex(t => t.classList.contains("empty"));
+      const valid = [
+        emptyPos - 1, emptyPos + 1,
+        emptyPos - size, emptyPos + size
+      ];
+      if (!valid.includes(index)) return;
+      [tiles[index], tiles[emptyPos]] = [tiles[emptyPos], tiles[index]];
+      updateGrid();
+      checkSolved();
+    }
+
+    function updateGrid() {
+      taquin.innerHTML = "";
+      tiles.forEach((tile, i) => {
+        tile.addEventListener("click", () => moveTile(i));
+        taquin.appendChild(tile);
+      });
+    }
+
+    function checkSolved() {
+      for (let i = 0; i < tiles.length - 1; i++) {
+        if (tiles[i].dataset.index != i) return;
+      }
+      coords.style.display = "block";
+    }
+
+    createTiles();
+    shuffleTiles();
+  </script>
+</body>
+</html>
 
