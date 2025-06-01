@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Taquin - Dentelle</title>
+  <title>Taquin 3x3</title>
   <style>
     body {
       font-family: sans-serif;
@@ -33,11 +33,12 @@
     .tile {
       width: 100%;
       height: 100%;
+      background-image: url('Dentelle.jpg');
       background-size: 300% 300%;
       cursor: pointer;
     }
     .empty {
-      background: white;
+      background: white !important;
       cursor: default;
     }
     #coords {
@@ -50,93 +51,95 @@
   </style>
 </head>
 <body>
-  <h1>Jeu du Taquin</h1>
+  <h1>Jeu du Taquin 3x3</h1>
   <div id="taquin"></div>
   <div id="coords">N 48° 50.123 E 001° 30.456</div>
 
   <script>
     const size = 3;
+    const totalTiles = size * size;
     const taquin = document.getElementById("taquin");
     const coords = document.getElementById("coords");
     let tiles = [];
-    let emptyIndex = size * size - 1;
+    let positions = [];
 
     function createTiles() {
-      for (let i = 0; i < size * size; i++) {
+      for (let i = 0; i < totalTiles; i++) {
         const tile = document.createElement("div");
-        tile.classList.add("tile");
-        if (i === emptyIndex) tile.classList.add("empty");
-        else {
+        tile.className = "tile";
+        if (i === totalTiles - 1) {
+          tile.classList.add("empty");
+          tile.dataset.index = -1;
+        } else {
           const col = i % size;
           const row = Math.floor(i / size);
-          tile.style.backgroundImage = "url('Dentelle.jpg')";
           tile.style.backgroundPosition = `${col * 100}% ${row * 100}%`;
           tile.dataset.index = i;
         }
-        taquin.appendChild(tile);
+        tile.addEventListener("click", () => tryMove(i));
         tiles.push(tile);
+        positions.push(i);
       }
+      positions[totalTiles - 1] = -1;
+      render();
     }
 
-    function shuffleTiles() {
-      const indices = [...Array(size * size - 1).keys()];
-      for (let i = indices.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [indices[i], indices[j]] = [indices[j], indices[i]];
-      }
-      indices.push(emptyIndex);
+    function render() {
       taquin.innerHTML = "";
-      tiles = [];
-      for (let i = 0; i < indices.length; i++) {
-        const tile = document.createElement("div");
-        tile.classList.add("tile");
-        if (indices[i] === emptyIndex) tile.classList.add("empty");
-        else {
-          const col = indices[i] % size;
-          const row = Math.floor(indices[i] / size);
-          tile.style.backgroundImage = "url('Dentelle.jpg')";
-          tile.style.backgroundPosition = `${col * 100}% ${row * 100}%`;
-          tile.dataset.index = indices[i];
-        }
-        tile.addEventListener("click", () => moveTile(i));
-        taquin.appendChild(tile);
-        tiles.push(tile);
-      }
-    }
-
-    function moveTile(index) {
-  const emptyPos = tiles.findIndex(t => t.classList.contains("empty"));
-  const rowIndex = Math.floor(index / size);
-  const colIndex = index % size;
-  const emptyRow = Math.floor(emptyPos / size);
-  const emptyCol = emptyPos % size;
-
-  const isAdjacent = (Math.abs(rowIndex - emptyRow) + Math.abs(colIndex - emptyCol)) === 1;
-  if (!isAdjacent) return;
-
-  [tiles[index], tiles[emptyPos]] = [tiles[emptyPos], tiles[index]];
-  updateGrid();
-  checkSolved();
-}
-
-
-    function updateGrid() {
-      taquin.innerHTML = "";
-      tiles.forEach((tile, i) => {
-        tile.addEventListener("click", () => moveTile(i));
-        taquin.appendChild(tile);
+      positions.forEach(pos => {
+        taquin.appendChild(pos === -1 ? createEmptyTile() : tiles[pos]);
       });
     }
 
+    function createEmptyTile() {
+      const empty = document.createElement("div");
+      empty.className = "tile empty";
+      return empty;
+    }
+
+    function tryMove(index) {
+      const emptyPos = positions.indexOf(-1);
+      const row = Math.floor(index / size);
+      const col = index % size;
+      const emptyRow = Math.floor(emptyPos / size);
+      const emptyCol = emptyPos % size;
+
+      const isAdjacent = (Math.abs(row - emptyRow) + Math.abs(col - emptyCol)) === 1;
+      if (!isAdjacent) return;
+
+      [positions[index], positions[emptyPos]] = [positions[emptyPos], positions[index]];
+      render();
+      checkSolved();
+    }
+
+    function shuffle() {
+      for (let i = positions.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [positions[i], positions[j]] = [positions[j], positions[i]];
+      }
+      if (!isSolvable(positions)) shuffle();
+    }
+
+    function isSolvable(p) {
+      let inv = 0;
+      for (let i = 0; i < p.length; i++) {
+        for (let j = i + 1; j < p.length; j++) {
+          if (p[i] !== -1 && p[j] !== -1 && p[i] > p[j]) inv++;
+        }
+      }
+      return inv % 2 === 0;
+    }
+
     function checkSolved() {
-      for (let i = 0; i < tiles.length - 1; i++) {
-        if (tiles[i].dataset.index != i) return;
+      for (let i = 0; i < totalTiles - 1; i++) {
+        if (positions[i] !== i) return;
       }
       coords.style.display = "block";
     }
 
     createTiles();
-    shuffleTiles();
+    shuffle();
+    render();
   </script>
 </body>
 </html>
