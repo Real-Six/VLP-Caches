@@ -47,6 +47,7 @@
       color: #2d2d2d;
       display: none;
       text-align: center;
+      opacity: 0;
     }
   </style>
 </head>
@@ -132,7 +133,13 @@
         if (positions[i] !== i) return;
       }
       if (positions[totalTiles - 1] !== -1) return;
+
       coords.style.display = "block";
+      coords.style.opacity = 0;
+      setTimeout(() => {
+        coords.style.transition = "opacity 1s ease";
+        coords.style.opacity = 1;
+      }, 10);
     }
 
     createTiles();
