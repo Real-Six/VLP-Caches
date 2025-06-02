@@ -53,7 +53,7 @@
 <body>
   <h1>Jeu du Taquin 3x3</h1>
   <div id="taquin"></div>
-  <div id="coords">N 48° 50.123 E 001° 30.456</div>
+  <div id="coords">🎉 Bravo ! Coordonnées : N 48° 50.123 E 001° 30.456</div>
 
   <script>
     const size = 3;
@@ -128,13 +128,12 @@
     }
 
     function checkSolved() {
-  for (let i = 0; i < totalTiles - 1; i++) {
-    if (positions[i] !== i) return;
-  }
-  if (positions[totalTiles - 1] !== -1) return;
-  coords.style.display = "block";
-}
-
+      for (let i = 0; i < totalTiles - 1; i++) {
+        if (positions[i] !== i) return;
+      }
+      if (positions[totalTiles - 1] !== -1) return;
+      coords.style.display = "block";
+    }
 
     createTiles();
     shuffle();
