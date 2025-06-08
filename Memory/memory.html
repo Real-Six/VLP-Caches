@@ -166,10 +166,14 @@
           if (flipped[0].src === flipped[1].src) {
             matched++;
             flipped = [];
+
+            // ✅ Ajoute 1 erreur max jusqu’à 15
+            erreursRestantes = Math.min(erreursRestantes + 1, 15);
+            erreursDisplay.textContent = `Erreurs restantes : ${erreursRestantes}`;
+
             if (matched === totalPairs) {
               coords.style.display = "block";
               gameEnded = true;
-              // PAS DE bouton rejouer ici
             }
           } else {
             setTimeout(() => {
