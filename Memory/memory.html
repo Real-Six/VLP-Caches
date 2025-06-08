@@ -1,1 +1,154 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Memory - Croix</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #fff;
+      margin: 0;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    h1 {
+      color: #2d2d2d;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+      gap: 10px;
+      max-width: 600px;
+      margin: auto;
+    }
+
+    .card {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      cursor: pointer;
+      perspective: 1000px;
+    }
+
+    .inner {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.5s;
+    }
+
+    .flipped .inner {
+      transform: rotateY(180deg);
+    }
+
+    .front, .back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    .front {
+      background: #eee;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+    }
+
+    .back img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 6px;
+    }
+
+    .back {
+      transform: rotateY(180deg);
+    }
+
+    #coords {
+      display: none;
+      margin-top: 20px;
+      font-size: 1.2em;
+      color: #2d2d2d;
+    }
+  </style>
+</head>
+<body>
+  <h1>Jeu de Memory - Croix</h1>
+  <div class="grid" id="grid"></div>
+  <div id="coords">🎉 Bravo ! Coordonnées : N 48° 50.123 E 001° 30.456</div>
+
+  <script>
+    const grid = document.getElementById("grid");
+    const coords = document.getElementById("coords");
+
+    const totalPairs = 12;
+    let images = [];
+
+    for (let i = 1; i <= totalPairs; i++) {
+      images.push(`Croix/${i}.png`);
+      images.push(`Croix/${i}.png`);
+    }
+
+    images = images.sort(() => Math.random() - 0.5);
+
+    let flipped = [];
+    let matched = 0;
+
+    images.forEach((src, index) => {
+      const card = document.createElement("div");
+      card.className = "card";
+      card.dataset.index = index;
+
+      const inner = document.createElement("div");
+      inner.className = "inner";
+
+      const front = document.createElement("div");
+      front.className = "front";
+      front.textContent = "?";
+
+      const back = document.createElement("div");
+      back.className = "back";
+      const img = document.createElement("img");
+      img.src = src;
+      back.appendChild(img);
+
+      inner.appendChild(front);
+      inner.appendChild(back);
+      card.appendChild(inner);
+      grid.appendChild(card);
+
+      card.addEventListener("click", () => {
+        if (card.classList.contains("flipped") || flipped.length === 2) return;
+
+        card.classList.add("flipped");
+        flipped.push({ card, src });
+
+        if (flipped.length === 2) {
+          if (flipped[0].src === flipped[1].src) {
+            matched++;
+            flipped = [];
+            if (matched === totalPairs) {
+              coords.style.display = "block";
+            }
+          } else {
+            setTimeout(() => {
+              flipped.forEach(f => f.card.classList.remove("flipped"));
+              flipped = [];
+            }, 1000);
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>
 
