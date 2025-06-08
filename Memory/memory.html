@@ -25,7 +25,7 @@
 
     .grid {
       display: grid;
-      grid-template-columns: repeat(6, 1fr); /* 6 colonnes */
+      grid-template-columns: repeat(6, 1fr);
       gap: 10px;
       max-width: 600px;
       margin: auto;
@@ -79,7 +79,7 @@
       transform: rotateY(180deg);
     }
 
-    #coords {
+    #coords, #gameover {
       display: none;
       margin-top: 20px;
       font-size: 1.2em;
@@ -89,16 +89,21 @@
 </head>
 <body>
   <h1>Jeu de Memory - Croix</h1>
-  <p id="erreurs">Erreurs : 0</p>
+  <p id="erreurs">Erreurs restantes : 15</p>
   <div class="grid" id="grid"></div>
   <div id="coords">🎉 Bravo ! Coordonnées : N 48° 50.123 E 001° 30.456</div>
+  <div id="gameover">💥 Partie terminée ! Vous avez atteint la limite d’erreurs.</div>
 
   <script>
     const grid = document.getElementById("grid");
     const coords = document.getElementById("coords");
     const erreursDisplay = document.getElementById("erreurs");
+    const gameover = document.getElementById("gameover");
 
     const totalPairs = 12;
+    let erreursRestantes = 15;
+    let matched = 0;
+    let flipped = [];
     let images = [];
 
     for (let i = 1; i <= totalPairs; i++) {
@@ -108,9 +113,7 @@
 
     images = images.sort(() => Math.random() - 0.5);
 
-    let flipped = [];
-    let matched = 0;
-    let erreurs = 0;
+    let gameEnded = false;
 
     images.forEach((src, index) => {
       const card = document.createElement("div");
@@ -136,7 +139,7 @@
       grid.appendChild(card);
 
       card.addEventListener("click", () => {
-        if (card.classList.contains("flipped") || flipped.length === 2) return;
+        if (gameEnded || card.classList.contains("flipped") || flipped.length === 2) return;
 
         card.classList.add("flipped");
         flipped.push({ card, src });
@@ -147,13 +150,18 @@
             flipped = [];
             if (matched === totalPairs) {
               coords.style.display = "block";
+              gameEnded = true;
             }
           } else {
             setTimeout(() => {
               flipped.forEach(f => f.card.classList.remove("flipped"));
               flipped = [];
-              erreurs++;
-              erreursDisplay.textContent = `Erreurs : ${erreurs}`;
+              erreursRestantes--;
+              erreursDisplay.textContent = `Erreurs restantes : ${erreursRestantes}`;
+              if (erreursRestantes === 0) {
+                gameover.style.display = "block";
+                gameEnded = true;
+              }
             }, 1000);
           }
         }
