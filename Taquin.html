@@ -129,8 +129,8 @@
     }
 
     function checkSolved() {
-      for (let i = 0; i < totalTiles - 1; i++) {
-        if (positions[i] === -1 || positions[i] !== i) return;
+      for (let i = 0; i < totalTiles; i++) {
+        if (positions[i] !== -1 && positions[i] !== i) return;
       }
 
       coords.style.display = "block";
