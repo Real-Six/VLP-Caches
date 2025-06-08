@@ -78,19 +78,24 @@
     }
 
     function render() {
-      taquin.innerHTML = "";
-      positions.forEach((pos, i) => {
-        if (pos === -1) {
-          const empty = document.createElement("div");
-          empty.className = "tile empty";
-          taquin.appendChild(empty);
-        } else {
-          const tile = tiles[pos];
-          tile.onclick = () => tryMove(i);
-          taquin.appendChild(tile);
-        }
-      });
+  taquin.innerHTML = "";
+  positions.forEach((pos, i) => {
+    const tile = document.createElement("div");
+    tile.className = "tile";
+
+    if (pos === -1) {
+      tile.classList.add("empty");
+    } else {
+      const col = pos % size;
+      const row = Math.floor(pos / size);
+      tile.style.backgroundPosition = `${col * 100}% ${row * 100}%`;
+      tile.addEventListener("click", () => tryMove(i));
     }
+
+    taquin.appendChild(tile);
+  });
+}
+
 
     function tryMove(clickedIndex) {
       const emptyIndex = positions.indexOf(-1);
