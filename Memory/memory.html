@@ -105,7 +105,7 @@
 </head>
 <body>
   <h1>Jeu de Memory - Croix</h1>
-  <p id="erreurs">Erreurs restantes : 10</p>
+  <p id="erreurs">Erreurs restantes : 5</p>
   <div class="grid" id="grid"></div>
   <div id="coords">🎉 Bravo ! Coordonnées : N 48° 50.123 E 001° 30.456</div>
   <div id="gameover">💥 Partie terminée ! Vous avez atteint la limite d’erreurs.</div>
@@ -119,7 +119,7 @@
     const rejouerBtn = document.getElementById("rejouer");
 
     const totalPairs = 12;
-    let erreursRestantes = 10;
+    let erreursRestantes = 5;
     let matched = 0;
     let flipped = [];
     let images = [];
