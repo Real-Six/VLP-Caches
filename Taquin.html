@@ -6,155 +6,117 @@
   <title>Taquin 3x3</title>
   <style>
     body {
-      font-family: sans-serif;
-      background: #fff;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      padding: 1rem;
-      min-height: 100vh;
-      margin: 0;
-    }
-    h1 {
-      color: #2d2d2d;
-      font-size: 1.5rem;
+      font-family: Arial, sans-serif;
       text-align: center;
+      margin: 30px;
     }
     #taquin {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      width: 90vw;
-      max-width: 300px;
-      aspect-ratio: 1 / 1;
+      width: 300px;
+      height: 300px;
+      margin: auto;
       gap: 2px;
-      margin-top: 1rem;
     }
     .tile {
-      width: 100%;
-      height: 100%;
       background-image: url('Dentelle.jpg');
       background-size: 300% 300%;
+      aspect-ratio: 1/1;
       cursor: pointer;
     }
     .empty {
       background: white !important;
       cursor: default;
     }
-    #coords {
+    #message {
       margin-top: 20px;
       font-size: 1.2em;
       color: #2d2d2d;
       display: none;
-      text-align: center;
-      opacity: 0;
     }
   </style>
 </head>
 <body>
-  <h1>Jeu du Taquin 3x3</h1>
-  <div id="taquin"></div>
-  <div id="coords">🎉 Bravo ! Coordonnées : N 48° 50.123 E 001° 30.456</div>
 
-  <script>
-    const size = 3;
-    const totalTiles = size * size;
-    const taquin = document.getElementById("taquin");
-    const coords = document.getElementById("coords");
-    let tiles = [];
-    let positions = [];
+<h1>Jeu du Taquin 3x3</h1>
+<div id="taquin"></div>
+<div id="message">🎉 Bravo ! Coordonnées : N 48° 50.123 E 001° 30.456</div>
 
-    function createTiles() {
-      tiles = [];
-      for (let i = 0; i < totalTiles - 1; i++) {
-        const tile = document.createElement("div");
-        tile.className = "tile";
-        const col = i % size;
-        const row = Math.floor(i / size);
-        tile.style.backgroundPosition = `${col * 100}% ${row * 100}%`;
-        tile.dataset.index = i;
-        tiles.push(tile);
-      }
+<script>
+const size = 3;
+const total = size * size;
+const taquin = document.getElementById("taquin");
+const message = document.getElementById("message");
+
+let positions = [...Array(total - 1).keys(), -1];
+
+function shuffle(array) {
+  let currentIndex = array.length, randomIndex;
+
+  do {
+    array = [...Array(total - 1).keys(), -1];
+    for (let i = array.length - 1; i > 0; i--) {
+      randomIndex = Math.floor(Math.random() * (i + 1));
+      [array[i], array[randomIndex]] = [array[randomIndex], array[i]];
     }
+  } while (!isSolvable(array));
 
-    function render() {
+  return array;
+}
+
+function isSolvable(p) {
+  let inv = 0;
+  for (let i = 0; i < p.length; i++) {
+    for (let j = i + 1; j < p.length; j++) {
+      if (p[i] !== -1 && p[j] !== -1 && p[i] > p[j]) inv++;
+    }
+  }
+  return inv % 2 === 0;
+}
+
+function render() {
   taquin.innerHTML = "";
-  positions.forEach((pos, i) => {
+  positions.forEach((val, i) => {
     const tile = document.createElement("div");
     tile.className = "tile";
-
-    if (pos === -1) {
+    if (val === -1) {
       tile.classList.add("empty");
     } else {
-      const col = pos % size;
-      const row = Math.floor(pos / size);
-      tile.style.backgroundPosition = `${col * 100}% ${row * 100}%`;
+      const x = val % size;
+      const y = Math.floor(val / size);
+      tile.style.backgroundPosition = `${x * -100}% ${y * -100}%`;
       tile.addEventListener("click", () => tryMove(i));
     }
-
     taquin.appendChild(tile);
   });
 }
 
+function tryMove(index) {
+  const emptyIndex = positions.indexOf(-1);
+  const row1 = Math.floor(index / size);
+  const col1 = index % size;
+  const row2 = Math.floor(emptyIndex / size);
+  const col2 = emptyIndex % size;
 
-    function tryMove(clickedIndex) {
-      const emptyIndex = positions.indexOf(-1);
-      const clickedRow = Math.floor(clickedIndex / size);
-      const clickedCol = clickedIndex % size;
-      const emptyRow = Math.floor(emptyIndex / size);
-      const emptyCol = emptyIndex % size;
+  if (Math.abs(row1 - row2) + Math.abs(col1 - col2) !== 1) return;
 
-      const isAdjacent = (Math.abs(clickedRow - emptyRow) + Math.abs(clickedCol - emptyCol)) === 1;
-      if (!isAdjacent) return;
-
-      [positions[clickedIndex], positions[emptyIndex]] = [positions[emptyIndex], positions[clickedIndex]];
-      render();
-      checkSolved();
-    }
-
-    function shuffle() {
-      do {
-        positions = [...Array(totalTiles - 1).keys()];
-        positions.push(-1);
-        for (let i = positions.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [positions[i], positions[j]] = [positions[j], positions[i]];
-        }
-      } while (!isSolvable(positions));
-    }
-
-    function isSolvable(p) {
-      let inv = 0;
-      for (let i = 0; i < p.length; i++) {
-        for (let j = i + 1; j < p.length; j++) {
-          if (p[i] !== -1 && p[j] !== -1 && p[i] > p[j]) inv++;
-        }
-      }
-      return inv % 2 === 0;
-    }
-
-    function checkSolved() {
-  // Vérifie que les 8 premières positions contiennent 0 à 7 dans le bon ordre
-  for (let i = 0; i < totalTiles - 1; i++) {
-    if (positions[i] !== i) return;
-  }
-
-  // Vérifie que la dernière case est bien vide (-1)
-  if (positions[totalTiles - 1] !== -1) return;
-
-  // Affichage du message avec animation
-  coords.style.display = "block";
-  coords.style.opacity = 0;
-  setTimeout(() => {
-    coords.style.transition = "opacity 1s ease";
-    coords.style.opacity = 1;
-  }, 10);
+  [positions[index], positions[emptyIndex]] = [positions[emptyIndex], positions[index]];
+  render();
+  checkSolved();
 }
 
+function checkSolved() {
+  for (let i = 0; i < total - 1; i++) {
+    if (positions[i] !== i) return;
+  }
+  if (positions[total - 1] !== -1) return;
 
-    createTiles();
-    shuffle();
-    render();
-  </script>
+  message.style.display = "block";
+}
+
+positions = shuffle(positions);
+render();
+</script>
+
 </body>
 </html>
