@@ -17,13 +17,19 @@
       color: #2d2d2d;
     }
 
+    #erreurs {
+      font-size: 1.1em;
+      color: #555;
+      margin-bottom: 10px;
+    }
+
     .grid {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr); /* <-- 6 colonnes */
-  gap: 10px;
-  max-width: 600px;
-  margin: auto;
-}
+      display: grid;
+      grid-template-columns: repeat(6, 1fr); /* 6 colonnes */
+      gap: 10px;
+      max-width: 600px;
+      margin: auto;
+    }
 
     .card {
       position: relative;
@@ -83,12 +89,14 @@
 </head>
 <body>
   <h1>Jeu de Memory - Croix</h1>
+  <p id="erreurs">Erreurs : 0</p>
   <div class="grid" id="grid"></div>
   <div id="coords">🎉 Bravo ! Coordonnées : N 48° 50.123 E 001° 30.456</div>
 
   <script>
     const grid = document.getElementById("grid");
     const coords = document.getElementById("coords");
+    const erreursDisplay = document.getElementById("erreurs");
 
     const totalPairs = 12;
     let images = [];
@@ -102,6 +110,7 @@
 
     let flipped = [];
     let matched = 0;
+    let erreurs = 0;
 
     images.forEach((src, index) => {
       const card = document.createElement("div");
@@ -143,6 +152,8 @@
             setTimeout(() => {
               flipped.forEach(f => f.card.classList.remove("flipped"));
               flipped = [];
+              erreurs++;
+              erreursDisplay.textContent = `Erreurs : ${erreurs}`;
             }, 1000);
           }
         }
@@ -151,4 +162,3 @@
   </script>
 </body>
 </html>
-
