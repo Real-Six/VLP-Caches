@@ -85,6 +85,22 @@
       font-size: 1.2em;
       color: #2d2d2d;
     }
+
+    #rejouer {
+      display: none;
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 1em;
+      background-color: #2d2d2d;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    #rejouer:hover {
+      background-color: #444;
+    }
   </style>
 </head>
 <body>
@@ -93,12 +109,14 @@
   <div class="grid" id="grid"></div>
   <div id="coords">🎉 Bravo ! Coordonnées : N 48° 50.123 E 001° 30.456</div>
   <div id="gameover">💥 Partie terminée ! Vous avez atteint la limite d’erreurs.</div>
+  <button id="rejouer" onclick="location.reload()">🔁 Rejouer</button>
 
   <script>
     const grid = document.getElementById("grid");
     const coords = document.getElementById("coords");
-    const erreursDisplay = document.getElementById("erreurs");
     const gameover = document.getElementById("gameover");
+    const erreursDisplay = document.getElementById("erreurs");
+    const rejouerBtn = document.getElementById("rejouer");
 
     const totalPairs = 12;
     let erreursRestantes = 15;
@@ -151,6 +169,7 @@
             if (matched === totalPairs) {
               coords.style.display = "block";
               gameEnded = true;
+              rejouerBtn.style.display = "inline-block";
             }
           } else {
             setTimeout(() => {
@@ -161,6 +180,7 @@
               if (erreursRestantes === 0) {
                 gameover.style.display = "block";
                 gameEnded = true;
+                rejouerBtn.style.display = "inline-block";
               }
             }, 1000);
           }
