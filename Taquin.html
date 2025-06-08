@@ -134,17 +134,23 @@
     }
 
     function checkSolved() {
-      for (let i = 0; i < totalTiles; i++) {
-        if (positions[i] !== -1 && positions[i] !== i) return;
-      }
+  // Vérifie que les 8 premières positions contiennent 0 à 7 dans le bon ordre
+  for (let i = 0; i < totalTiles - 1; i++) {
+    if (positions[i] !== i) return;
+  }
 
-      coords.style.display = "block";
-      coords.style.opacity = 0;
-      setTimeout(() => {
-        coords.style.transition = "opacity 1s ease";
-        coords.style.opacity = 1;
-      }, 10);
-    }
+  // Vérifie que la dernière case est bien vide (-1)
+  if (positions[totalTiles - 1] !== -1) return;
+
+  // Affichage du message avec animation
+  coords.style.display = "block";
+  coords.style.opacity = 0;
+  setTimeout(() => {
+    coords.style.transition = "opacity 1s ease";
+    coords.style.opacity = 1;
+  }, 10);
+}
+
 
     createTiles();
     shuffle();
