@@ -1,1 +1,88 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Jeu des différences</title>
+  <style>
+    body {
+      font-family: Georgia, serif;
+      background-color: #f9f4ee;
+      color: #333;
+      text-align: center;
+      margin: 2em;
+    }
+    h1 {
+      margin-bottom: 1em;
+    }
+    .wrapper {
+      display: inline-block;
+      position: relative;
+      margin: 0 1em;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+    .wrapper img {
+      display: block;
+      height: auto;
+      max-width: 600px;
+    }
+    .wrapper svg {
+      position: absolute;
+      top: 0; left: 0;
+    }
+    /* Cercles rouges */
+    .diff {
+      stroke: red;
+      stroke-width: 4;
+      fill: none;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🎩 Jeu des différences – Villedieu-les-Poêles 🎩</h1>
+
+  <!-- Image Codée avec cercles rouges -->
+  <div class="wrapper">
+    <img src="codee.png" alt="Gravure Codée" width="600" height="1020">
+    <svg width="600" height="1020" viewBox="0 0 600 1020">
+      <!-- 1. Numérotation “1255” -->
+      <circle class="diff" cx="510" cy="45" r="30"/>
+      <!-- 2. Petite brique manquante à l’angle supérieur gauche -->
+      <circle class="diff" cx=" 38" cy="60" r="20"/>
+      <!-- 3. Arche n°3 de la corniche -->
+      <circle class="diff" cx="300" cy="75" r="25"/>
+      <!-- 4. Flèche sous la bannière -->
+      <circle class="diff" cx="165" cy="210" r="30"/>
+      <!-- 5. Détail de la couronne du blason -->
+      <circle class="diff" cx="270" cy="283" r="38"/>
+      <!-- 6. Goujon du grillage (barre verticale) -->
+      <circle class="diff" cx="435" cy="395" r="15"/>
+      <!-- 7. Goujon du grillage (barre inférieure) -->
+      <circle class="diff" cx="450" cy="447" r="15"/>
+      <!-- 8. Maillon de chaîne côté gauche -->
+      <circle class="diff" cx=" 75" cy="313" r="23"/>
+      <!-- 9. Maillon de chaîne côté droit -->
+      <circle class="diff" cx="540" cy="268" r="23"/>
+      <!-- 10. Croix sur le plastron du chevalier -->
+      <circle class="diff" cx="135" cy="670" r="45"/>
+      <!-- 11. Fibule du manteau du chevalier -->
+      <circle class="diff" cx="180" cy="633" r="15"/>
+      <!-- 12. Boucle de ceinture -->
+      <circle class="diff" cx="158" cy="715" r="19"/>
+      <!-- 13. Motif losangé sur la jambe gauche -->
+      <circle class="diff" cx="173" cy="804" r="34"/>
+      <!-- 14. Ligne de sol : variante de niveau -->
+      <circle class="diff" cx="405" cy="923" r="45"/>
+      <!-- 15. Signature “L. Lemonier” -->
+      <circle class="diff" cx="503" cy="931" r="38"/>
+    </svg>
+  </div>
+
+  <!-- Image Originale sans annotations -->
+  <div class="wrapper">
+    <img src="originale.png" alt="Gravure Originale" width="600" height="1020">
+  </div>
+
+</body>
+</html>
 
