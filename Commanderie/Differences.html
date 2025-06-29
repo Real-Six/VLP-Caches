@@ -2,33 +2,32 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Annoter les différences</title>
+  <title>Afficher Codee.png en entier</title>
   <style>
     body {
       margin: 0;
-      padding: 0;
-      font-family: Georgia, serif;
+      padding: 1em;
       background-color: #f9f4ee;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
+      font-family: Georgia, serif;
+      text-align: center;
     }
     .container {
-      position: relative;
-      border: 4px solid #666;
-      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+      display: inline-block;
+      border: 2px solid #666;
+      padding: 0.5em;
+      background: white;
     }
-    img {
+    .container img {
       display: block;
-      max-width: 90vw;
+      max-width: 100%;
       height: auto;
     }
   </style>
 </head>
 <body>
+  <h1>📌 Image complète : Codee.png 📌</h1>
   <div class="container">
-    <img src="Codee.png" alt="Gravure Codée" id="codee-image">
+    <img src="Codee.png" alt="Gravure Codée complète" id="codee-image">
   </div>
 </body>
 </html>
