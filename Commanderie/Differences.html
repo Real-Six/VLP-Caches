@@ -2,32 +2,136 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Afficher Codee.png en entier</title>
+  <title>Jeu des différences interactif</title>
   <style>
     body {
-      margin: 0;
-      padding: 1em;
-      background-color: #f9f4ee;
+      margin: 2em;
       font-family: Georgia, serif;
+      background-color: #f9f4ee;
+      color: #333;
       text-align: center;
     }
-    .container {
-      display: inline-block;
-      border: 2px solid #666;
-      padding: 0.5em;
-      background: white;
+    h1 {
+      margin-bottom: 1em;
     }
-    .container img {
+    .gallery {
+      display: flex;
+      justify-content: center;
+      gap: 2em;
+    }
+    .wrapper {
+      position: relative;
+      border: 4px double #666;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    }
+    .wrapper img {
       display: block;
-      max-width: 100%;
+      width: 100%;
       height: auto;
+    }
+    /* Le SVG d’overlay prend toute la place */
+    .wrapper svg {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
     }
   </style>
 </head>
 <body>
-  <h1>📌 Image complète : Codee.png 📌</h1>
-  <div class="container">
-    <img src="Codee.png" alt="Gravure Codée complète" id="codee-image">
+
+  <h1>🎩 Jeu des différences – Villedieu-les-Poêles 🎩</h1>
+  <p>Cliquez sur l’image de gauche pour entourer chacune des 15 différences.</p>
+
+  <div class="gallery">
+    <!-- 1) Codee.png avec overlay cliquable -->
+    <div class="wrapper" style="width: 600px; height: 1020px;">
+      <img
+        src="Codee.png"
+        alt="Gravure codée"
+        id="codee-img"
+        width="600"
+        height="1020">
+      <svg
+        id="overlay"
+        viewBox="0 0 600 1020"
+        preserveAspectRatio="xMidYMid meet">
+        <!-- Les zones cliquables seront créées par JavaScript -->
+      </svg>
+    </div>
+
+    <!-- 2) Originale.png sans overlay -->
+    <div class="wrapper" style="width: 600px; height: 1020px;">
+      <img
+        src="Originale.png"
+        alt="Gravure originale"
+        width="600"
+        height="1020">
+    </div>
   </div>
+
+  <script>
+    // Définissez ici vos 15 différences : 
+    // cx, cy = centre du cercle (en pixels),
+    // r = rayon approximatif du cercle.
+    const hotspots = [
+      { id: 1, cx:  /* ex : 575 */ 0, cy: /* ex :  30 */ 0, r: /* ex : 30 */ 0 },
+      { id: 2, cx:  /*        */ 0, cy: /*        */ 0, r: /*        */ 0 },
+      { id: 3, cx:                   0, cy:                   0, r:                   0 },
+      { id: 4, cx:                   0, cy:                   0, r:                   0 },
+      { id: 5, cx:                   0, cy:                   0, r:                   0 },
+      { id: 6, cx:                   0, cy:                   0, r:                   0 },
+      { id: 7, cx:                   0, cy:                   0, r:                   0 },
+      { id: 8, cx:                   0, cy:                   0, r:                   0 },
+      { id: 9, cx:                   0, cy:                   0, r:                   0 },
+      { id:10, cx:                   0, cy:                   0, r:                   0 },
+      { id:11, cx:                   0, cy:                   0, r:                   0 },
+      { id:12, cx:                   0, cy:                   0, r:                   0 },
+      { id:13, cx:                   0, cy:                   0, r:                   0 },
+      { id:14, cx:                   0, cy:                   0, r:                   0 },
+      { id:15, cx:                   0, cy:                   0, r:                   0 },
+    ];
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const svg = document.getElementById('overlay');
+
+      hotspots.forEach(h => {
+        // 1) Création de la zone cliquable (invisible)
+        const zone = document.createElementNS('http://www.w3.org/2000/svg','circle');
+        zone.setAttribute('cx', h.cx);
+        zone.setAttribute('cy', h.cy);
+        zone.setAttribute('r',  h.r);
+        zone.setAttribute('fill', 'transparent');
+        zone.setAttribute('cursor', 'pointer');
+        zone.addEventListener('click', () => {
+          // Si déjà marqué, on n’ajoute pas
+          if (svg.getElementById('mark-'+h.id)) return;
+
+          // 2) On entoure la zone en rouge
+          const mark = document.createElementNS('http://www.w3.org/2000/svg','circle');
+          mark.setAttribute('cx', h.cx);
+          mark.setAttribute('cy', h.cy);
+          mark.setAttribute('r',  h.r);
+          mark.setAttribute('stroke', 'red');
+          mark.setAttribute('stroke-width', '4');
+          mark.setAttribute('fill', 'none');
+          mark.setAttribute('id', 'mark-'+h.id);
+          svg.appendChild(mark);
+
+          // 3) On ajoute le chiffre
+          const label = document.createElementNS('http://www.w3.org/2000/svg','text');
+          label.setAttribute('x', h.cx + h.r + 5);
+          label.setAttribute('y', h.cy - h.r - 5);
+          label.setAttribute('fill', 'red');
+          label.setAttribute('font-size', '24');
+          label.setAttribute('font-weight', 'bold');
+          label.textContent = h.id;
+          label.setAttribute('id', 'label-'+h.id);
+          svg.appendChild(label);
+        });
+        svg.appendChild(zone);
+      });
+    });
+  </script>
+
 </body>
 </html>
