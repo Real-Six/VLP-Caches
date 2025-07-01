@@ -106,8 +106,8 @@
 
           // label
           const t = document.createElementNS(e.target.namespaceURI, 'text');
-          t.setAttribute('x', cx + r + 5);
-          t.setAttribute('y', cy - r - 5);
+          t.setAttribute('x', cx + r - 5);
+          t.setAttribute('y', cy - r + 5);
           t.setAttribute('class', 'label');
           t.textContent = id;
           t.setAttribute('id', 'label-'+id);
