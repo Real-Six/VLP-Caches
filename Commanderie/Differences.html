@@ -17,7 +17,6 @@
       gap: 2em;
     }
     svg {
-      /* largeur responsive, conserver le ratio 600×1020 */
       width: 100%;
       max-width: 600px;
       border: 4px double #666;
@@ -26,7 +25,7 @@
     .zone {
       fill: transparent;
       stroke: none;
-      cursor: default; /* Curseur flèche normale, pas de main */
+      cursor: default;
   
     }
     .mark {
@@ -43,55 +42,30 @@
 </head>
 <body>
 
-  <h1>Cherchez les 15 différences - Find the 15 differences</h1>
+  <h1>Cliques sur les 15 différences - Click on the 15 differences</h1>
   
   <div class="gallery">
-    <!-- SVG interactif pour Codee.png -->
+    
     <svg id="svgInteractive"
          viewBox="0 0 600 1020"
          preserveAspectRatio="xMidYMid meet">
-      <!-- 1) On insère l’image comme fond -->
       <image href="Codee.png" x="0" y="0" width="600" height="1020"/>
-
-      <!-- 2) Les « zones » cliquables invisibles --> N 48° 50.250′ W 1° 13.449′
-      <circle class="zone" data-id="N"  cx="80" cy="295"  r="10"/>
-      <circle class="zone" data-id="4"  cx="585" cy="50"  r="10"/>
-      <circle class="zone" data-id="8"  cx="538"  cy="250"  r="10"/>
-      <circle class="zone" data-id="°5"  cx="555" cy="440"  r="10"/>
+      <circle class="zone" data-id="00"  cx="104" cy="687"  r="10"/><circle class="zone" data-id="3."  cx="215" cy="393"  r="10"/>
+      <circle class="zone" data-id="44"  cx="240" cy="297"  r="10"/><circle class="zone" data-id="°1"  cx="185" cy="510"  r="10"/>
+      <circle class="zone" data-id="4"  cx="585" cy="50"  r="10"/><circle class="zone" data-id="8"  cx="538"  cy="250"  r="10"/>
+      <circle class="zone" data-id="2"  cx="502" cy="857"  r="10"/><circle class="zone" data-id="5"  cx="435" cy="968"  r="10"/>
+      <circle class="zone" data-id="0'"  cx="70" cy="808"  r="10"/><circle class="zone" data-id="N"  cx="80" cy="295"  r="10"/>
+      <circle class="zone" data-id="W"  cx="207" cy="760"  r="10"/><circle class="zone" data-id="1"  cx="105" cy="624"  r="10"/>
+      <circle class="zone" data-id="9'"  cx="149" cy="327"  r="10"/><circle class="zone" data-id="°5"  cx="555" cy="440"  r="10"/>
       <circle class="zone" data-id="0."  cx="443" cy="555"  r="10"/>
-      <circle class="zone" data-id="2"  cx="502" cy="857"  r="10"/>
-      <circle class="zone" data-id="5"  cx="435" cy="968"  r="10"/>
-      <circle class="zone" data-id="0'"  cx="70" cy="808"  r="10"/>
-      
-      <circle class="zone" data-id="W"  cx="207" cy="760"  r="10"/>
-      <circle class="zone" data-id="00"  cx="104" cy="687"  r="10"/>
-      <circle class="zone" data-id="1"  cx="105" cy="624"  r="10"/>
-      <circle class="zone" data-id="°1"  cx="185" cy="510"  r="10"/>
-      <circle class="zone" data-id="3."  cx="215" cy="393"  r="10"/>
-      <circle class="zone" data-id="44"  cx="240" cy="297"  r="10"/>
-      <circle class="zone" data-id="9'"  cx="149" cy="327"  r="10"/>
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      <!-- 3) Groupe vide pour y ajouter cercles + labels -->
+     
       <g id="marks"></g>
     </svg>
-
-    <!-- Gravure originale côte à côte -->
     <svg viewBox="0 0 600 1020"
          preserveAspectRatio="xMidYMid meet">
       <image href="Originale.png" x="0" y="0" width="600" height="1020"/>
     </svg>
   </div>
-
   <script>
     document.querySelectorAll('#svgInteractive .zone')
       .forEach(zone => {
@@ -101,11 +75,7 @@
           const cy = +e.target.getAttribute('cy');
           const r  = +e.target.getAttribute('r');
           const marks = document.getElementById('marks');
-
-          // si déjà marqué, on ne duplique pas
           if (document.getElementById('mark-'+id)) return;
-
-          // cercle rouge
           const c = document.createElementNS(e.target.namespaceURI, 'circle');
           c.setAttribute('cx', cx);
           c.setAttribute('cy', cy);
@@ -113,8 +83,6 @@
           c.setAttribute('class', 'mark');
           c.setAttribute('id', 'mark-'+id);
           marks.appendChild(c);
-
-          // label
           const t = document.createElementNS(e.target.namespaceURI, 'text');
           t.setAttribute('x', cx - r - 15);
           t.setAttribute('y', cy + r + 15);
@@ -125,6 +93,5 @@
         });
       });
   </script>
-
 </body>
 </html>
