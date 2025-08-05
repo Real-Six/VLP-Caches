@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>15 Differences</title>
+  <title>15 Différences avec Loupe</title>
   <style>
     body {
       margin: 2em;
@@ -11,108 +11,127 @@
       color: #333;
       text-align: center;
     }
+    h1 {
+      margin-bottom: 1em;
+    }
     .gallery {
       display: flex;
       justify-content: center;
       gap: 2em;
     }
-    /* On donne à chaque SVG 45% de la largeur du conteneur,
-       de sorte que les deux images occupent chacune bien la moitié de l’écran, 
-       tout en restant responsives. */
-    .gallery svg {
-      width: 45%;
-      height: auto;
+    /* Chaque conteneur inclut l’image/SVG et sa loupe */
+    .magnifier-container {
+      position: relative;
+      width: 45%;             /* responsive : chaque image fait ~45% */
+      max-width: 600px;
       border: 4px double #666;
       box-shadow: 0 0 10px rgba(0,0,0,0.3);
     }
-    .zone {
-      fill: transparent;
-      stroke: none;
-      cursor: default;
+    .magnifier-container svg {
+      width: 100%;
+      height: auto;
+      display: block;
     }
-    .mark {
-      fill: none;
-      stroke: yellow;
-      stroke-width: 4;
-    }
-    .label {
-      fill: yellow;
-      font-size: 24px;
-      font-weight: bold;
+    /* La loupe : un cercle vide avec fond agrandi */
+    .lens {
+      position: absolute;
+      display: none;
+      border: 3px solid #444;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      overflow: hidden;
+      pointer-events: none;
+      /* Le fond sera positionné en JS */
+      background-repeat: no-repeat;
     }
   </style>
 </head>
 <body>
 
-  <h1>Cliques sur les 15 différences</h1>
+  <h1>🔍 Jeu des différences avec loupe synchronisée 🔍</h1>
+  <p>Passez la souris sur la gravure codée pour faire apparaître deux loupes en même temps.</p>
+
   <div class="gallery">
-    
-    <!-- SVG interactif : l'image et les cercles partagent le même viewBox -->
-    <svg id="svgInteractive"
-         viewBox="0 0 600 1020"
-         preserveAspectRatio="xMidYMid meet">
-      <!-- l'image prend 100% du viewBox -->
-      <image href="Codee.png" x="0" y="0" width="100%" height="100%"/>
+    <!-- Conteneur 1 : Codee.png + hotspots (SVG interactif) -->
+    <div id="wrap1" class="magnifier-container">
+      <svg id="svgInteractive"
+           viewBox="0 0 600 1020"
+           preserveAspectRatio="xMidYMid meet">
+        <image href="Codee.png" x="0" y="0" width="100%" height="100%"/>
+        <!-- vos 15 zones cliquables ici -->
+        <circle class="zone" data-id="1" cx="104" cy="687" r="10"/>
+        <!-- … -->
+        <g id="marks"></g>
+      </svg>
+      <div id="lens1" class="lens"></div>
+    </div>
 
-      <!-- hotspots invisibles, en coordonnées SVG 600×1020 -->
-      <circle class="zone" data-id="1" cx="104" cy="687" r="10"/>
-      <circle class="zone" data-id="2" cx="215" cy="393" r="10"/>
-      <circle class="zone" data-id="3" cx="240" cy="297" r="10"/>
-      <circle class="zone" data-id="4" cx="185" cy="510" r="10"/>
-      <circle class="zone" data-id="5" cx="585" cy="50"  r="10"/>
-      <circle class="zone" data-id="6" cx="538" cy="250" r="10"/>
-      <circle class="zone" data-id="7" cx="502" cy="857" r="10"/>
-      <circle class="zone" data-id="8" cx="435" cy="968" r="10"/>
-      <circle class="zone" data-id="9" cx="70"  cy="808" r="10"/>
-      <circle class="zone" data-id="10"cx="80"  cy="295" r="10"/>
-      <circle class="zone" data-id="11"cx="207" cy="760" r="10"/>
-      <circle class="zone" data-id="12"cx="105" cy="624" r="10"/>
-      <circle class="zone" data-id="13"cx="149" cy="327" r="10"/>
-      <circle class="zone" data-id="14"cx="555" cy="440" r="10"/>
-      <circle class="zone" data-id="15"cx="443" cy="555" r="10"/>
-
-      <!-- ici on ajoutera dynamiquement les marques et labels -->
-      <g id="marks"></g>
-    </svg>
-
-    <!-- Gravure originale, côte à côte -->
-    <svg viewBox="0 0 600 1020"
-         preserveAspectRatio="xMidYMid meet">
-      <image href="Originale.png" x="0" y="0" width="100%" height="100%"/>
-    </svg>
-
+    <!-- Conteneur 2 : Originale.png -->
+    <div id="wrap2" class="magnifier-container">
+      <svg viewBox="0 0 600 1020"
+           preserveAspectRatio="xMidYMid meet">
+        <image href="Originale.png" x="0" y="0" width="100%" height="100%"/>
+      </svg>
+      <div id="lens2" class="lens"></div>
+    </div>
   </div>
 
   <script>
-    document.querySelectorAll('#svgInteractive .zone').forEach(zone => {
-      zone.addEventListener('click', e => {
-        const id = e.target.dataset.id;
-        const cx = +e.target.getAttribute('cx');
-        const cy = +e.target.getAttribute('cy');
-        const r  = +e.target.getAttribute('r');
-        const marks = document.getElementById('marks');
+    (function(){
+      const wrap1 = document.getElementById('wrap1');
+      const wrap2 = document.getElementById('wrap2');
+      const lens1 = document.getElementById('lens1');
+      const lens2 = document.getElementById('lens2');
+      const zoom = 2;  // facteur de grossissement
 
-        if (document.getElementById('mark-'+id)) return;
+      // préparer le fond de chaque loupe
+      lens1.style.backgroundImage = "url('Codee.png')";
+      lens2.style.backgroundImage = "url('Originale.png')";
 
-        // Cercle jaune
-        const c = document.createElementNS(e.target.namespaceURI, 'circle');
-        c.setAttribute('cx', cx);
-        c.setAttribute('cy', cy);
-        c.setAttribute('r',  r);
-        c.setAttribute('class', 'mark');
-        c.setAttribute('id', 'mark-'+id);
-        marks.appendChild(c);
-
-        // Label jaune
-        const t = document.createElementNS(e.target.namespaceURI, 'text');
-        t.setAttribute('x', cx + r + 5);
-        t.setAttribute('y', cy - r - 5);
-        t.setAttribute('class', 'label');
-        t.textContent = id;
-        t.setAttribute('id', 'label-'+id);
-        marks.appendChild(t);
+      // quand on bouge sur la première gravure…
+      wrap1.addEventListener('mousemove', e => {
+        // on affiche les deux loupes
+        lens1.style.display = lens2.style.display = 'block';
+        const pos = getCursorPos(e, wrap1);
+        moveLens(lens1, wrap1, pos);
+        moveLens(lens2, wrap2, pos);
       });
-    });
+      // masquer les loupes en quittant
+      wrap1.addEventListener('mouseleave', () => {
+        lens1.style.display = lens2.style.display = 'none';
+      });
+
+      // récupère la position relative du curseur dans un conteneur
+      function getCursorPos(e, container) {
+        const rect = container.getBoundingClientRect();
+        return {
+          x: e.clientX - rect.left,
+          y: e.clientY - rect.top
+        };
+      }
+
+      // place et configure la loupe en fonction de la position
+      function moveLens(lens, container, pos) {
+        const cw = container.clientWidth;
+        const ch = container.clientHeight;
+        const lw = lens.offsetWidth;
+        const lh = lens.offsetHeight;
+        // centrer la loupe sur le curseur
+        let x = pos.x - lw/2;
+        let y = pos.y - lh/2;
+        // limites
+        x = Math.max(0, Math.min(x, cw - lw));
+        y = Math.max(0, Math.min(y, ch - lh));
+        lens.style.left = x + 'px';
+        lens.style.top  = y + 'px';
+        // taille de fond (image agrandie)
+        lens.style.backgroundSize = (cw * zoom) + 'px ' + (ch * zoom) + 'px';
+        // décalage de fond pour centrer l’endroit agrandi
+        lens.style.backgroundPosition = 
+          `-${x * zoom}px -${y * zoom}px`;
+      }
+    })();
   </script>
 
 </body>
