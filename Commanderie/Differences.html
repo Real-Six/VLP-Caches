@@ -11,9 +11,7 @@
       color: #333;
       text-align: center;
     }
-    h1 {
-      margin-bottom: 1em;
-    }
+    h1 { margin-bottom: 1em; }
     .gallery {
       display: flex;
       justify-content: center;
@@ -33,12 +31,10 @@
     }
     .zone {
       fill: transparent;
-      stroke: none;
       cursor: default;
       pointer-events: all;
     }
-    .mark,
-    .label {
+    .mark, .label {
       pointer-events: none;
     }
     .mark {
@@ -115,9 +111,11 @@
       const lens2 = document.getElementById('lens2');
       const zoom = 2;
 
+      // Prépare les fonds des loupes
       lens1.style.backgroundImage = "url('Codee.png')";
       lens2.style.backgroundImage = "url('Originale.png')";
 
+      // Quand la souris bouge dans wrap1
       wrap1.addEventListener('mousemove', e => {
         const pos = getCursorPos(e, wrap1);
         moveLens(lens1, wrap1, pos);
@@ -128,6 +126,7 @@
         lens1.style.display = lens2.style.display = 'none';
       });
 
+      // Clic sur une zone
       document.querySelectorAll('#svgInteractive .zone')
         .forEach(zone => zone.addEventListener('click', e => {
           const id = e.target.dataset.id;
@@ -137,6 +136,7 @@
           const marks = document.getElementById('marks');
           if (document.getElementById('mark-'+id)) return;
 
+          // Cercle de marquage
           const c = document.createElementNS(e.target.namespaceURI,'circle');
           c.setAttribute('cx', cx);
           c.setAttribute('cy', cy);
@@ -145,6 +145,7 @@
           c.setAttribute('id', 'mark-'+id);
           marks.appendChild(c);
 
+          // Label
           const t = document.createElementNS(e.target.namespaceURI,'text');
           t.setAttribute('x', cx + r + 5);
           t.setAttribute('y', cy - r - 5);
@@ -154,33 +155,39 @@
           marks.appendChild(t);
         }));
 
+      // Position de la souris relative au contenu (en tenant compte de la bordure)
       function getCursorPos(e, container) {
         const rect = container.getBoundingClientRect();
+        const style = getComputedStyle(container);
+        const borderLeft = parseFloat(style.borderLeftWidth) || 0;
+        const borderTop  = parseFloat(style.borderTopWidth)  || 0;
         return {
-          x: e.clientX - rect.left,
-          y: e.clientY - rect.top
+          x: e.clientX - rect.left - borderLeft,
+          y: e.clientY - rect.top  - borderTop
         };
       }
+
+      // Centre la loupe sur pos.x/pos.y
       function moveLens(lens, container, pos) {
         const cw = container.clientWidth;
         const ch = container.clientHeight;
         const lw = lens.offsetWidth;
         const lh = lens.offsetHeight;
 
-        // centre la loupe sur le curseur
-        let lensX = pos.x - lw / 2;
-        let lensY = pos.y - lh / 2;
-        lensX = Math.max(0, Math.min(lensX, cw - lw));
-        lensY = Math.max(0, Math.min(lensY, ch - lh));
-        lens.style.left = lensX + 'px';
-        lens.style.top  = lensY + 'px';
+        // Position de la loupe (centrée puis bornée)
+        let lx = pos.x - lw/2;
+        let ly = pos.y - lh/2;
+        lx = Math.max(0, Math.min(lx, cw - lw));
+        ly = Math.max(0, Math.min(ly, ch - lh));
+        lens.style.left = lx + 'px';
+        lens.style.top  = ly + 'px';
 
-        // agrandit l'image de fond
+        // Taille du fond agrandi
         lens.style.backgroundSize = (cw * zoom) + 'px ' + (ch * zoom) + 'px';
 
-        // positionne le fond afin de centrer le point sous la loupe
-        const bgX = pos.x * zoom - lw / 2;
-        const bgY = pos.y * zoom - lh / 2;
+        // Position du fond : centrer pos.x,pos.y
+        const bgX = pos.x * zoom - lw/2;
+        const bgY = pos.y * zoom - lh/2;
         lens.style.backgroundPosition = `-${bgX}px -${bgY}px`;
       }
     })();
