@@ -16,9 +16,12 @@
       justify-content: center;
       gap: 2em;
     }
-    svg {
-      width: 100%;
-      max-width: 600px;
+    /* On donne à chaque SVG 45% de la largeur du conteneur,
+       de sorte que les deux images occupent chacune bien la moitié de l’écran, 
+       tout en restant responsives. */
+    .gallery svg {
+      width: 45%;
+      height: auto;
       border: 4px double #666;
       box-shadow: 0 0 10px rgba(0,0,0,0.3);
     }
@@ -26,7 +29,6 @@
       fill: transparent;
       stroke: none;
       cursor: default;
-  
     }
     .mark {
       fill: none;
@@ -42,56 +44,76 @@
 </head>
 <body>
 
-  <h1>Cliques sur les 15 différences - Click on the 15 differences</h1>
-  
+  <h1>Cliques sur les 15 différences</h1>
   <div class="gallery">
     
+    <!-- SVG interactif : l'image et les cercles partagent le même viewBox -->
     <svg id="svgInteractive"
          viewBox="0 0 600 1020"
          preserveAspectRatio="xMidYMid meet">
-      <image href="Codee.png" x="0" y="0" width="600" height="1020"/>
-      <circle class="zone" data-id="00"  cx="104" cy="687"  r="10"/><circle class="zone" data-id="3."  cx="215" cy="393"  r="10"/>
-      <circle class="zone" data-id="44"  cx="240" cy="297"  r="10"/><circle class="zone" data-id="°1"  cx="185" cy="510"  r="10"/>
-      <circle class="zone" data-id="4"  cx="585" cy="50"  r="10"/><circle class="zone" data-id="8"  cx="538"  cy="250"  r="10"/>
-      <circle class="zone" data-id="2"  cx="502" cy="857"  r="10"/><circle class="zone" data-id="5"  cx="435" cy="968"  r="10"/>
-      <circle class="zone" data-id="0'"  cx="70" cy="808"  r="10"/><circle class="zone" data-id="N"  cx="80" cy="295"  r="10"/>
-      <circle class="zone" data-id="W"  cx="207" cy="760"  r="10"/><circle class="zone" data-id="1"  cx="105" cy="624"  r="10"/>
-      <circle class="zone" data-id="9'"  cx="149" cy="327"  r="10"/><circle class="zone" data-id="°5"  cx="555" cy="440"  r="10"/>
-      <circle class="zone" data-id="0."  cx="443" cy="555"  r="10"/>
-     
+      <!-- l'image prend 100% du viewBox -->
+      <image href="Codee.png" x="0" y="0" width="100%" height="100%"/>
+
+      <!-- hotspots invisibles, en coordonnées SVG 600×1020 -->
+      <circle class="zone" data-id="1" cx="104" cy="687" r="10"/>
+      <circle class="zone" data-id="2" cx="215" cy="393" r="10"/>
+      <circle class="zone" data-id="3" cx="240" cy="297" r="10"/>
+      <circle class="zone" data-id="4" cx="185" cy="510" r="10"/>
+      <circle class="zone" data-id="5" cx="585" cy="50"  r="10"/>
+      <circle class="zone" data-id="6" cx="538" cy="250" r="10"/>
+      <circle class="zone" data-id="7" cx="502" cy="857" r="10"/>
+      <circle class="zone" data-id="8" cx="435" cy="968" r="10"/>
+      <circle class="zone" data-id="9" cx="70"  cy="808" r="10"/>
+      <circle class="zone" data-id="10"cx="80"  cy="295" r="10"/>
+      <circle class="zone" data-id="11"cx="207" cy="760" r="10"/>
+      <circle class="zone" data-id="12"cx="105" cy="624" r="10"/>
+      <circle class="zone" data-id="13"cx="149" cy="327" r="10"/>
+      <circle class="zone" data-id="14"cx="555" cy="440" r="10"/>
+      <circle class="zone" data-id="15"cx="443" cy="555" r="10"/>
+
+      <!-- ici on ajoutera dynamiquement les marques et labels -->
       <g id="marks"></g>
     </svg>
+
+    <!-- Gravure originale, côte à côte -->
     <svg viewBox="0 0 600 1020"
          preserveAspectRatio="xMidYMid meet">
-      <image href="Originale.png" x="0" y="0" width="600" height="1020"/>
+      <image href="Originale.png" x="0" y="0" width="100%" height="100%"/>
     </svg>
+
   </div>
+
   <script>
-    document.querySelectorAll('#svgInteractive .zone')
-      .forEach(zone => {
-        zone.addEventListener('click', e => {
-          const id = e.target.getAttribute('data-id');
-          const cx = +e.target.getAttribute('cx');
-          const cy = +e.target.getAttribute('cy');
-          const r  = +e.target.getAttribute('r');
-          const marks = document.getElementById('marks');
-          if (document.getElementById('mark-'+id)) return;
-          const c = document.createElementNS(e.target.namespaceURI, 'circle');
-          c.setAttribute('cx', cx);
-          c.setAttribute('cy', cy);
-          c.setAttribute('r',  r);
-          c.setAttribute('class', 'mark');
-          c.setAttribute('id', 'mark-'+id);
-          marks.appendChild(c);
-          const t = document.createElementNS(e.target.namespaceURI, 'text');
-          t.setAttribute('x', cx - r - 15);
-          t.setAttribute('y', cy + r + 15);
-          t.setAttribute('class', 'label');
-          t.textContent = id;
-          t.setAttribute('id', 'label-'+id);
-          marks.appendChild(t);
-        });
+    document.querySelectorAll('#svgInteractive .zone').forEach(zone => {
+      zone.addEventListener('click', e => {
+        const id = e.target.dataset.id;
+        const cx = +e.target.getAttribute('cx');
+        const cy = +e.target.getAttribute('cy');
+        const r  = +e.target.getAttribute('r');
+        const marks = document.getElementById('marks');
+
+        if (document.getElementById('mark-'+id)) return;
+
+        // Cercle jaune
+        const c = document.createElementNS(e.target.namespaceURI, 'circle');
+        c.setAttribute('cx', cx);
+        c.setAttribute('cy', cy);
+        c.setAttribute('r',  r);
+        c.setAttribute('class', 'mark');
+        c.setAttribute('id', 'mark-'+id);
+        marks.appendChild(c);
+
+        // Label jaune
+        const t = document.createElementNS(e.target.namespaceURI, 'text');
+        t.setAttribute('x', cx + r + 5);
+        t.setAttribute('y', cy - r - 5);
+        t.setAttribute('class', 'label');
+        t.textContent = id;
+        t.setAttribute('id', 'label-'+id);
+        marks.appendChild(t);
       });
+    });
   </script>
+
 </body>
 </html>
