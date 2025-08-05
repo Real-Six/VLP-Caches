@@ -31,16 +31,15 @@
       height: auto;
       display: block;
     }
-    /* Zones invisibles cliquables */
     .zone {
       fill: transparent;
       stroke: none;
       cursor: default;
-      pointer-events: all; /* ← essentiel pour capter le clic */
+      pointer-events: all;
     }
-    /* Cercle de marquement jaune */
-    .mark, .label {
-      pointer-events: none; /* ← laisser passer le clic vers la zone en dessous */
+    .mark,
+    .label {
+      pointer-events: none;
     }
     .mark {
       fill: none;
@@ -52,7 +51,6 @@
       font-size: 24px;
       font-weight: bold;
     }
-    /* Loupe */
     .lens {
       position: absolute;
       display: none;
@@ -61,7 +59,7 @@
       border: 3px solid #444;
       border-radius: 50%;
       overflow: hidden;
-      pointer-events: none; /* ← laisser passer le clic sous la loupe */
+      pointer-events: none;
       background-repeat: no-repeat;
     }
   </style>
@@ -72,34 +70,34 @@
   <p>Survolez la gravure codée pour activer la loupe, puis cliquez sur chaque différence.</p>
 
   <div class="gallery">
-    <!-- Gravure codée avec zones & loupe -->
+    <!-- Gravure codée -->
     <div id="wrap1" class="magnifier-container">
       <svg id="svgInteractive"
            viewBox="0 0 600 1020"
            preserveAspectRatio="xMidYMid meet">
         <image href="Codee.png" x="0" y="0" width="100%" height="100%"/>
-        <!-- Vos 15 zones cliquables -->
-        <circle class="zone" data-id="1" cx="104" cy="687" r="10"/>
-        <circle class="zone" data-id="2" cx="215" cy="393" r="10"/>
-        <circle class="zone" data-id="3" cx="240" cy="297" r="10"/>
-        <circle class="zone" data-id="4" cx="185" cy="510" r="10"/>
-        <circle class="zone" data-id="5" cx="585" cy="50"  r="10"/>
-        <circle class="zone" data-id="6" cx="538" cy="250" r="10"/>
-        <circle class="zone" data-id="7" cx="502" cy="857" r="10"/>
-        <circle class="zone" data-id="8" cx="435" cy="968" r="10"/>
-        <circle class="zone" data-id="9" cx="70"  cy="808" r="10"/>
-        <circle class="zone" data-id="10"cx="80"  cy="295" r="10"/>
-        <circle class="zone" data-id="11"cx="207" cy="760" r="10"/>
-        <circle class="zone" data-id="12"cx="105" cy="624" r="10"/>
-        <circle class="zone" data-id="13"cx="149" cy="327" r="10"/>
-        <circle class="zone" data-id="14"cx="555" cy="440" r="10"/>
-        <circle class="zone" data-id="15"cx="443" cy="555" r="10"/>
+        <!-- 15 zones cliquables -->
+        <circle class="zone" data-id="1"  cx="104" cy="687" r="10"/>
+        <circle class="zone" data-id="2"  cx="215" cy="393" r="10"/>
+        <circle class="zone" data-id="3"  cx="240" cy="297" r="10"/>
+        <circle class="zone" data-id="4"  cx="185" cy="510" r="10"/>
+        <circle class="zone" data-id="5"  cx="585" cy="50"  r="10"/>
+        <circle class="zone" data-id="6"  cx="538" cy="250" r="10"/>
+        <circle class="zone" data-id="7"  cx="502" cy="857" r="10"/>
+        <circle class="zone" data-id="8"  cx="435" cy="968" r="10"/>
+        <circle class="zone" data-id="9"  cx="70"  cy="808" r="10"/>
+        <circle class="zone" data-id="10" cx="80"  cy="295" r="10"/>
+        <circle class="zone" data-id="11" cx="207" cy="760" r="10"/>
+        <circle class="zone" data-id="12" cx="105" cy="624" r="10"/>
+        <circle class="zone" data-id="13" cx="149" cy="327" r="10"/>
+        <circle class="zone" data-id="14" cx="555" cy="440" r="10"/>
+        <circle class="zone" data-id="15" cx="443" cy="555" r="10"/>
         <g id="marks"></g>
       </svg>
       <div id="lens1" class="lens"></div>
     </div>
 
-    <!-- Gravure originale avec loupe synchronisée -->
+    <!-- Gravure originale -->
     <div id="wrap2" class="magnifier-container">
       <svg viewBox="0 0 600 1020"
            preserveAspectRatio="xMidYMid meet">
@@ -117,11 +115,9 @@
       const lens2 = document.getElementById('lens2');
       const zoom = 2;
 
-      // Prépare les fonds des loupes
       lens1.style.backgroundImage = "url('Codee.png')";
       lens2.style.backgroundImage = "url('Originale.png')";
 
-      // Affiche et déplace les loupes
       wrap1.addEventListener('mousemove', e => {
         const pos = getCursorPos(e, wrap1);
         moveLens(lens1, wrap1, pos);
@@ -132,7 +128,6 @@
         lens1.style.display = lens2.style.display = 'none';
       });
 
-      // Gestion du clic sur chaque zone
       document.querySelectorAll('#svgInteractive .zone')
         .forEach(zone => zone.addEventListener('click', e => {
           const id = e.target.dataset.id;
@@ -142,22 +137,20 @@
           const marks = document.getElementById('marks');
           if (document.getElementById('mark-'+id)) return;
 
-          // cercle de marquage
           const c = document.createElementNS(e.target.namespaceURI,'circle');
-          c.setAttribute('cx',cx);
-          c.setAttribute('cy',cy);
-          c.setAttribute('r', r);
-          c.setAttribute('class','mark');
-          c.setAttribute('id','mark-'+id);
+          c.setAttribute('cx', cx);
+          c.setAttribute('cy', cy);
+          c.setAttribute('r',  r);
+          c.setAttribute('class', 'mark');
+          c.setAttribute('id', 'mark-'+id);
           marks.appendChild(c);
 
-          // label
           const t = document.createElementNS(e.target.namespaceURI,'text');
-          t.setAttribute('x',cx + r + 5);
-          t.setAttribute('y',cy - r - 5);
-          t.setAttribute('class','label');
+          t.setAttribute('x', cx + r + 5);
+          t.setAttribute('y', cy - r - 5);
+          t.setAttribute('class', 'label');
           t.textContent = id;
-          t.setAttribute('id','label-'+id);
+          t.setAttribute('id', 'label-'+id);
           marks.appendChild(t);
         }));
 
@@ -169,16 +162,26 @@
         };
       }
       function moveLens(lens, container, pos) {
-        const cw = container.clientWidth, ch = container.clientHeight;
-        const lw = lens.offsetWidth, lh = lens.offsetHeight;
-        let x = pos.x - lw/2, y = pos.y - lh/2;
-        x = Math.max(0, Math.min(x, cw-lw));
-        y = Math.max(0, Math.min(y, ch-lh));
-        lens.style.left = x + 'px';
-        lens.style.top  = y + 'px';
-        lens.style.backgroundSize = (cw*zoom) + 'px ' + (ch*zoom) + 'px';
-        lens.style.backgroundPosition =
-          `-${x*zoom}px -${y*zoom}px`;
+        const cw = container.clientWidth;
+        const ch = container.clientHeight;
+        const lw = lens.offsetWidth;
+        const lh = lens.offsetHeight;
+
+        // centre la loupe sur le curseur
+        let lensX = pos.x - lw / 2;
+        let lensY = pos.y - lh / 2;
+        lensX = Math.max(0, Math.min(lensX, cw - lw));
+        lensY = Math.max(0, Math.min(lensY, ch - lh));
+        lens.style.left = lensX + 'px';
+        lens.style.top  = lensY + 'px';
+
+        // agrandit l'image de fond
+        lens.style.backgroundSize = (cw * zoom) + 'px ' + (ch * zoom) + 'px';
+
+        // positionne le fond afin de centrer le point sous la loupe
+        const bgX = pos.x * zoom - lw / 2;
+        const bgY = pos.y * zoom - lh / 2;
+        lens.style.backgroundPosition = `-${bgX}px -${bgY}px`;
       }
     })();
   </script>
