@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>15 Différences avec Loupe & Clic</title>
+  <title>15 Differences</title>
   <style>
     body {
       margin: 2em;
@@ -11,32 +11,22 @@
       color: #333;
       text-align: center;
     }
-    h1 { margin-bottom: 1em; }
     .gallery {
       display: flex;
       justify-content: center;
       gap: 2em;
     }
-    .magnifier-container {
-      position: relative;
-      width: 45%;
+    svg {
+      width: 100%;
       max-width: 600px;
       border: 4px double #666;
       box-shadow: 0 0 10px rgba(0,0,0,0.3);
-      box-sizing: border-box; /* Border inclus dans width/height */
-    }
-    .magnifier-container svg {
-      width: 100%;
-      height: auto;
-      display: block;
     }
     .zone {
       fill: transparent;
+      stroke: none;
       cursor: default;
-      pointer-events: all;
-    }
-    .mark, .label {
-      pointer-events: none;
+  
     }
     .mark {
       fill: none;
@@ -48,100 +38,44 @@
       font-size: 24px;
       font-weight: bold;
     }
-    .lens {
-      position: absolute;
-      display: none;
-      width: 80px;
-      height: 80px;
-      border: 3px solid #444;
-      border-radius: 50%;
-      overflow: hidden;
-      pointer-events: none;
-      background-repeat: no-repeat;
-      box-sizing: border-box;
-    }
   </style>
 </head>
 <body>
 
-  <h1>🔍 15 Différences – Loupe & Clic 🔍</h1>
-  <p>Survolez la gravure codée pour activer la loupe, puis cliquez sur chaque différence.</p>
-
+  <h1>Cliques sur les 15 différences - Click on the 15 differences</h1>
+  
   <div class="gallery">
-    <!-- Container Codee -->
-    <div id="wrap1" class="magnifier-container">
-      <svg id="svgInteractive"
-           viewBox="0 0 600 1020"
-           preserveAspectRatio="xMidYMid meet">
-        <image href="Codee.png" x="0" y="0" width="100%" height="100%"/>
-        <!-- 15 zones cliquables -->
-        <circle class="zone" data-id="1"  cx="104" cy="687" r="10"/>
-        <circle class="zone" data-id="2"  cx="215" cy="393" r="10"/>
-        <circle class="zone" data-id="3"  cx="240" cy="297" r="10"/>
-        <circle class="zone" data-id="4"  cx="185" cy="510" r="10"/>
-        <circle class="zone" data-id="5"  cx="585" cy="50"  r="10"/>
-        <circle class="zone" data-id="6"  cx="538" cy="250" r="10"/>
-        <circle class="zone" data-id="7"  cx="502" cy="857" r="10"/>
-        <circle class="zone" data-id="8"  cx="435" cy="968" r="10"/>
-        <circle class="zone" data-id="9"  cx="70"  cy="808" r="10"/>
-        <circle class="zone" data-id="10" cx="80"  cy="295" r="10"/>
-        <circle class="zone" data-id="11" cx="207" cy="760" r="10"/>
-        <circle class="zone" data-id="12" cx="105" cy="624" r="10"/>
-        <circle class="zone" data-id="13" cx="149" cy="327" r="10"/>
-        <circle class="zone" data-id="14" cx="555" cy="440" r="10"/>
-        <circle class="zone" data-id="15" cx="443" cy="555" r="10"/>
-        <g id="marks"></g>
-      </svg>
-      <div id="lens1" class="lens"></div>
-    </div>
-
-    <!-- Container Originale -->
-    <div id="wrap2" class="magnifier-container">
-      <svg viewBox="0 0 600 1020"
-           preserveAspectRatio="xMidYMid meet">
-        <image href="Originale.png" x="0" y="0" width="100%" height="100%"/>
-      </svg>
-      <div id="lens2" class="lens"></div>
-    </div>
+    
+    <svg id="svgInteractive"
+         viewBox="0 0 600 1020"
+         preserveAspectRatio="xMidYMid meet">
+      <image href="Codee.png" x="0" y="0" width="600" height="1020"/>
+      <circle class="zone" data-id="00"  cx="104" cy="687"  r="10"/><circle class="zone" data-id="3."  cx="215" cy="393"  r="10"/>
+      <circle class="zone" data-id="44"  cx="240" cy="297"  r="10"/><circle class="zone" data-id="°1"  cx="185" cy="510"  r="10"/>
+      <circle class="zone" data-id="4"  cx="585" cy="50"  r="10"/><circle class="zone" data-id="8"  cx="538"  cy="250"  r="10"/>
+      <circle class="zone" data-id="2"  cx="502" cy="857"  r="10"/><circle class="zone" data-id="5"  cx="435" cy="968"  r="10"/>
+      <circle class="zone" data-id="0'"  cx="70" cy="808"  r="10"/><circle class="zone" data-id="N"  cx="80" cy="295"  r="10"/>
+      <circle class="zone" data-id="W"  cx="207" cy="760"  r="10"/><circle class="zone" data-id="1"  cx="105" cy="624"  r="10"/>
+      <circle class="zone" data-id="9'"  cx="149" cy="327"  r="10"/><circle class="zone" data-id="°5"  cx="555" cy="440"  r="10"/>
+      <circle class="zone" data-id="0."  cx="443" cy="555"  r="10"/>
+     
+      <g id="marks"></g>
+    </svg>
+    <svg viewBox="0 0 600 1020"
+         preserveAspectRatio="xMidYMid meet">
+      <image href="Originale.png" x="0" y="0" width="600" height="1020"/>
+    </svg>
   </div>
-
   <script>
-    (function(){
-      const wrap1 = document.getElementById('wrap1');
-      const wrap2 = document.getElementById('wrap2');
-      const lens1 = document.getElementById('lens1');
-      const lens2 = document.getElementById('lens2');
-      const zoom  = 2;
-
-      // Prépare les fonds des loupes
-      lens1.style.backgroundImage = "url('Codee.png')";
-      lens2.style.backgroundImage = "url('Originale.png')";
-
-      // Mouvement et affichage des loupes sur wrap1
-      wrap1.addEventListener('mousemove', e => {
-        const rect = wrap1.getBoundingClientRect();
-        // On inclut box-sizing:border-box → rect inclut bordure
-        const posX = e.clientX - rect.left;
-        const posY = e.clientY - rect.top;
-        moveLens(lens1, wrap1, posX, posY);
-        moveLens(lens2, wrap2, posX, posY);
-        lens1.style.display = lens2.style.display = 'block';
-      });
-      wrap1.addEventListener('mouseleave', () => {
-        lens1.style.display = lens2.style.display = 'none';
-      });
-
-      // Clic sur zone dans le SVG
-      document.querySelectorAll('#svgInteractive .zone')
-        .forEach(zone => zone.addEventListener('click', e => {
-          const id    = e.target.dataset.id;
-          const cx    = +e.target.getAttribute('cx');
-          const cy    = +e.target.getAttribute('cy');
-          const r     = +e.target.getAttribute('r');
+    document.querySelectorAll('#svgInteractive .zone')
+      .forEach(zone => {
+        zone.addEventListener('click', e => {
+          const id = e.target.getAttribute('data-id');
+          const cx = +e.target.getAttribute('cx');
+          const cy = +e.target.getAttribute('cy');
+          const r  = +e.target.getAttribute('r');
           const marks = document.getElementById('marks');
-          if (marks.querySelector('#mark-'+id)) return;
-
-          // Cercle de marquage
+          if (document.getElementById('mark-'+id)) return;
           const c = document.createElementNS(e.target.namespaceURI, 'circle');
           c.setAttribute('cx', cx);
           c.setAttribute('cy', cy);
@@ -149,42 +83,15 @@
           c.setAttribute('class', 'mark');
           c.setAttribute('id', 'mark-'+id);
           marks.appendChild(c);
-
-          // Label
           const t = document.createElementNS(e.target.namespaceURI, 'text');
-          t.setAttribute('x', cx + r + 5);
-          t.setAttribute('y', cy - r - 5);
+          t.setAttribute('x', cx - r - 15);
+          t.setAttribute('y', cy + r + 15);
           t.setAttribute('class', 'label');
           t.textContent = id;
           t.setAttribute('id', 'label-'+id);
           marks.appendChild(t);
-        }));
-
-      // Fonction utilitaire de positionnement de la loupe
-      function moveLens(lens, container, posX, posY) {
-        const cw = container.clientWidth;
-        const ch = container.clientHeight;
-        const lw = lens.offsetWidth;
-        const lh = lens.offsetHeight;
-
-        // centre la loupe
-        let x = posX - lw/2;
-        let y = posY - lh/2;
-        x = Math.max(0, Math.min(x, cw - lw));
-        y = Math.max(0, Math.min(y, ch - lh));
-        lens.style.left = x + 'px';
-        lens.style.top  = y + 'px';
-
-        // fond agrandi
-        lens.style.backgroundSize = (cw * zoom) + 'px ' + (ch * zoom) + 'px';
-
-        // fond centré sur posX,posY
-        const bgX = posX * zoom - lw/2;
-        const bgY = posY * zoom - lh/2;
-        lens.style.backgroundPosition = `-${bgX}px -${bgY}px`;
-      }
-    })();
+        });
+      });
   </script>
-
 </body>
 </html>
