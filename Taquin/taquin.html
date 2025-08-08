@@ -2,51 +2,134 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Taquin 3x3</title>
+  <meta name="viewport" content="width=400">
+  <title>Jeu du Taquin Mystère</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      margin: 30px;
+      font-family: 'Segoe Print', 'Comic Sans MS', cursive, Arial, sans-serif;
+      background: url('parchemin_bg.jpg') center/cover no-repeat #231f18;
+      margin: 0; min-height: 100vh;
+      color: #2d1c06;
+      display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+    }
+    h1 {
+      margin-top: 40px;
+      font-family: 'UnifrakturCook', cursive, serif;
+      letter-spacing: 0.06em;
+      color: #fff6df;
+      text-shadow: 0 2px 8px #b27834, 0 0px 1px #000;
+      background: rgba(60,40,16,0.15);
+      padding: 12px 28px;
+      border-radius: 20px;
+      border: 2px solid #edba78;
+      box-shadow: 0 4px 32px #0008;
+      font-size: 2em;
+    }
+    #intro {
+      margin: 26px 0 16px 0;
+      font-size: 1.05em;
+      color: #ffe4ad;
+      font-family: 'Segoe Print', 'Comic Sans MS', cursive;
+      text-shadow: 0 1px 3px #61411b99;
+      background: rgba(0,0,0,0.09);
+      border-radius: 12px;
+      padding: 12px 18px;
+      max-width: 400px;
     }
     #taquin {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      width: 300px;
-      height: 300px;
-      margin: auto;
-      gap: 2px;
+      width: 330px;
+      height: 330px;
+      margin: 0 auto 18px auto;
+      gap: 2.5px;
+      background: #c3a97bcc;
+      border-radius: 18px;
+      box-shadow: 0 10px 40px #0007, 0 0 0 4px #7b5b30 inset;
+      border: 3.5px solid #e2c490;
     }
     .tile {
       background-image: url('Dentelle.jpg');
       background-size: 300% 300%;
       aspect-ratio: 1/1;
       cursor: pointer;
+      box-shadow: 0 3px 16px #0007, 0 0 0 2px #b2894e inset;
+      border-radius: 8px;
+      transition: box-shadow 0.18s, filter 0.2s;
+      filter: brightness(1) drop-shadow(0 0 2px #fff5e1);
+      border: 1.6px solid #edba78;
+      position: relative;
+    }
+    .tile:hover {
+      filter: brightness(1.08) drop-shadow(0 0 3px #fff2cc);
+      z-index: 2;
     }
     .empty {
-      background: white !important;
+      background: transparent !important;
       cursor: default;
+      box-shadow: none !important;
+      border: none !important;
     }
     #message {
-      margin-top: 20px;
-      font-size: 1.2em;
-      color: #2d2d2d;
+      margin-top: 18px;
+      font-size: 1.25em;
+      color: #dfbb72;
+      font-family: 'Caveat', 'Segoe Print', cursive;
+      text-shadow: 0 1px 5px #644b20cc;
       display: none;
+      background: rgba(39,26,10,0.21);
+      border-radius: 10px;
+      padding: 12px 30px;
+      border: 1.5px solid #efc472;
+      animation: apparition 1.2s cubic-bezier(0.2,0.8,0.3,1) both;
+    }
+    @keyframes apparition {
+      0% { opacity:0; transform: scale(0.75);}
+      65% { opacity:0.9; transform: scale(1.06);}
+      100% { opacity:1; transform: scale(1);}
+    }
+    #replayBtn {
+      display: none;
+      margin-top: 24px;
+      padding: 0.6em 2.2em;
+      border-radius: 10px;
+      background: linear-gradient(90deg, #f2dcac, #ffe4bc, #c2a166);
+      color: #815e2a;
+      font-family: 'Segoe Print', cursive;
+      font-size: 1.1em;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      box-shadow: 0 2px 8px #b2783495;
+      transition: background 0.16s, transform 0.18s;
+    }
+    #replayBtn:hover {
+      background: linear-gradient(90deg, #ffeac7, #fff7e2, #ffe19c);
+      transform: scale(1.04);
+    }
+    @media (max-width: 430px) {
+      #taquin { width: 97vw; height: 97vw; max-width: 380px; max-height: 380px;}
     }
   </style>
+  <!-- Google Fonts pour la police Caveat et UnifrakturCook -->
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=UnifrakturCook:wght@700&display=swap" rel="stylesheet">
 </head>
 <body>
-
-<h1>Jeu du Taquin 3x3</h1>
+<h1>Le Taquin du Carnet Oublié</h1>
+<div id="intro">
+  <b>Pour avancer dans l’enquête :</b><br>
+  Remets chaque fragment à sa place pour révéler l’indice caché du carnet mystérieux.
+</div>
 <div id="taquin"></div>
-<div id="message">🎉 Bravo ! Coordonnées : N 48° 50.123 E 001° 30.456</div>
+<div id="message">🎉 Bravo, tu as réussi !<br><span style="color:#f3dfb5">Coordonnées : N 48° 50.123 E 001° 30.456</span></div>
+<button id="replayBtn">🔁 Rejouer</button>
 
 <script>
 const size = 3;
 const total = size * size;
 const taquin = document.getElementById("taquin");
 const message = document.getElementById("message");
+const replayBtn = document.getElementById("replayBtn");
 
 let positions = [...Array(total - 1).keys(), -1];
 
@@ -112,11 +195,19 @@ function checkSolved() {
   if (positions[total - 1] !== -1) return;
 
   message.style.display = "block";
+  replayBtn.style.display = "inline-block";
 }
 
+replayBtn.addEventListener('click', function() {
+  positions = shuffle(positions);
+  render();
+  message.style.display = "none";
+  replayBtn.style.display = "none";
+});
+
+// Démarrage initial
 positions = shuffle(positions);
 render();
 </script>
-
 </body>
 </html>
