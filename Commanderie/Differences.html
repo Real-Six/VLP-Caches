@@ -30,16 +30,17 @@
     }
     .mark {
       fill: none;
-      <span style="background:#FFFFFF"></span>
       stroke: #07ed25;
       stroke-width: 4;
     }
     .label {
-      fill: #07ed25;
-      <span style="background:#FFFFFF"></span>
-      font-size: 20px;
-      font-weight: bold;
-    }
+  fill: #07ed25;           /* couleur du texte */
+  stroke: #ffffff;         /* “fond” blanc autour */
+  stroke-width: 4px;       /* épaisseur du halo */
+  paint-order: stroke fill;/* on dessine d’abord le stroke, puis le fill */
+  font-size: 20px;
+  font-weight: bold;
+}
   </style>
 </head>
 <body>
