@@ -1,4 +1,125 @@
-<!-- Bouton Retour -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=400">
+  <title>Taquin Mystèrieux</title>
+  <style>
+    body {
+      font-family: 'Segoe Print', 'Comic Sans MS', center, cursive, Arial, sans-serif;
+      background: url('parchemin_bg.jpg') center/cover no-repeat #231f18;
+      margin: 0; min-height: 100vh;
+      color: #2d1c06;
+      display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+    }
+    h1 {
+      margin-top: 20px;
+      font-family: 'UnifrakturCook', cursive, serif;
+      letter-spacing: 0.06em;
+      color: #fff6df;
+      text-shadow: 0 2px 8px #b27834, 0 0px 1px #000;
+      background: rgba(60,40,16,0.15);
+      padding: 12px 28px;
+      border-radius: 20px;
+      border: 2px solid #edba78;
+      box-shadow: 0 4px 32px #0008;
+      font-size: 1.5em;
+    }
+    #intro {
+      margin: 10px 0 10px 0;
+      font-size: 1.05em;
+      color: #ffe4ad;
+      font-family: 'Segoe Print', 'Comic Sans MS', cursive;
+      text-shadow: 0 1px 3px #61411b99;
+      background: rgba(0,0,0,0.09);
+      border-radius: 12px;
+      padding: 12px 18px;
+      max-width: 400px;
+    }
+    #taquin {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      width: 330px;
+      height: 330px;
+      margin: 0 auto 18px auto;
+      gap: 2.5px;
+      background: #c3a97bcc;
+      border-radius: 18px;
+      box-shadow: 0 10px 40px #0007, 0 0 0 4px #7b5b30 inset;
+      border: 3.5px solid #e2c490;
+    }
+    .tile {
+      background-image: url('Dentelle.jpg');
+      background-size: 300% 300%;
+      aspect-ratio: 1/1;
+      cursor: pointer;
+      box-shadow: 0 3px 16px #0007, 0 0 0 2px #b2894e inset;
+      border-radius: 8px;
+      transition: box-shadow 0.18s, filter 0.2s;
+      filter: brightness(1) drop-shadow(0 0 2px #fff5e1);
+      border: 1.6px solid #edba78;
+      position: relative;
+    }
+    .tile:hover {
+      filter: brightness(1.08) drop-shadow(0 0 3px #fff2cc);
+      z-index: 2;
+    }
+    .empty {
+      background: transparent !important;
+      cursor: default;
+      box-shadow: none !important;
+      border: none !important;
+    }
+    #message {
+      margin-top: 18px;
+      font-size: 1.25em;
+      color: #dfbb72;
+      font-family: 'Caveat', 'Segoe Print', cursive;
+      text-shadow: 0 1px 5px #644b20cc;
+      display: none;
+      background: rgba(39,26,10,0.21);
+      border-radius: 10px;
+      padding: 12px 30px;
+      border: 1.5px solid #efc472;
+      animation: apparition 1.2s cubic-bezier(0.2,0.8,0.3,1) both;
+    }
+    @keyframes apparition {
+      0% { opacity:0; transform: scale(0.75);}
+      65% { opacity:0.9; transform: scale(1.06);}
+      100% { opacity:1; transform: scale(1);}
+    }
+    #backBtn {
+      display: none;
+      margin-top: 24px;
+      padding: 0.6em 2.2em;
+      border-radius: 10px;
+      background: linear-gradient(90deg, #c6ffcf, #a3f3a8, #68c774);
+      color: #234d25;
+      font-family: 'Segoe Print', cursive;
+      font-size: 1.1em;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      box-shadow: 0 2px 8px #2b6a2b95;
+      transition: background 0.16s, transform 0.18s;
+    }
+    #backBtn:hover {
+      background: linear-gradient(90deg, #d6ffd9, #bfffc6, #7ae188);
+      transform: scale(1.04);
+    }
+    @media (max-width: 430px) {
+      #taquin { width: 97vw; height: 97vw; max-width: 380px; max-height: 380px;}
+    }
+  </style>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=UnifrakturCook:wght@700&display=swap" rel="stylesheet">
+</head>
+<body>
+<h1>Le Taquin</h1>
+Remets chaque fragment à sa place pour révéler l’indice caché du carnet mystérieux.<br>
+Put each fragment back in its place to reveal the hidden clue of the mysterious notebook.
+<div id="taquin"></div>
+<div id="message"> Congratulations !<br><span style="color:#f3dfb5">Coordonnées : N 48° 50.123 W 001° 30.456</span></div>
 <button id="backBtn">⬅️ Retour à la cache</button>
 
 <script>
@@ -10,7 +131,58 @@ const backBtn = document.getElementById("backBtn");
 
 let positions = [...Array(total - 1).keys(), -1];
 
-// ... (le reste du code ne change pas)
+function shuffle(array) {
+  let currentIndex = array.length, randomIndex;
+  do {
+    array = [...Array(total - 1).keys(), -1];
+    for (let i = array.length - 1; i > 0; i--) {
+      randomIndex = Math.floor(Math.random() * (i + 1));
+      [array[i], array[randomIndex]] = [array[randomIndex], array[i]];
+    }
+  } while (!isSolvable(array));
+  return array;
+}
+
+function isSolvable(p) {
+  let inv = 0;
+  for (let i = 0; i < p.length; i++) {
+    for (let j = i + 1; j < p.length; j++) {
+      if (p[i] !== -1 && p[j] !== -1 && p[i] > p[j]) inv++;
+    }
+  }
+  return inv % 2 === 0;
+}
+
+function render() {
+  taquin.innerHTML = "";
+  positions.forEach((val, i) => {
+    const tile = document.createElement("div");
+    tile.className = "tile";
+    if (val === -1) {
+      tile.classList.add("empty");
+    } else {
+      const x = val % size;
+      const y = Math.floor(val / size);
+      tile.style.backgroundPosition = `${x * -100}% ${y * -100}%`;
+      tile.addEventListener("click", () => tryMove(i));
+    }
+    taquin.appendChild(tile);
+  });
+}
+
+function tryMove(index) {
+  const emptyIndex = positions.indexOf(-1);
+  const row1 = Math.floor(index / size);
+  const col1 = index % size;
+  const row2 = Math.floor(emptyIndex / size);
+  const col2 = emptyIndex % size;
+
+  if (Math.abs(row1 - row2) + Math.abs(col1 - col2) !== 1) return;
+
+  [positions[index], positions[emptyIndex]] = [positions[emptyIndex], positions[index]];
+  render();
+  checkSolved();
+}
 
 function checkSolved() {
   for (let i = 0; i < total - 1; i++) {
@@ -22,34 +194,14 @@ function checkSolved() {
   backBtn.style.display = "inline-block";
 }
 
-// Redirection vers la page Geocaching
+// Redirection bouton retour
 backBtn.addEventListener('click', function() {
   window.location.href = "https://www.geocaching.com/geocache/GCBAPQX";
 });
 
-// Démarrage initial
+// Démarrage
 positions = shuffle(positions);
 render();
 </script>
-
-<style>
-#backBtn {
-  display: none;
-  margin-top: 24px;
-  padding: 0.6em 2.2em;
-  border-radius: 10px;
-  background: linear-gradient(90deg, #c6ffcf, #a3f3a8, #68c774);
-  color: #234d25;
-  font-family: 'Segoe Print', cursive;
-  font-size: 1.1em;
-  border: none;
-  cursor: pointer;
-  font-weight: bold;
-  box-shadow: 0 2px 8px #2b6a2b95;
-  transition: background 0.16s, transform 0.18s;
-}
-#backBtn:hover {
-  background: linear-gradient(90deg, #d6ffd9, #bfffc6, #7ae188);
-  transform: scale(1.04);
-}
-</style>
+</body>
+</html>
